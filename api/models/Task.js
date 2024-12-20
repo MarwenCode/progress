@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 // Define the schema for tasks
-const taskSchema = Schema(
+const taskSchema = new Schema(
   {
     title: {
       type: String,
@@ -17,14 +17,6 @@ const taskSchema = Schema(
     completed: {
       type: Boolean,
       default: false,
-    },
-    goalTitle: {
-      type: String,
-      required: [true, 'Please add a goal title'],
-    },
-    goalDate: {
-      type: Date,
-      required: [true, 'Please add a goal date'],
     },
   },
   {

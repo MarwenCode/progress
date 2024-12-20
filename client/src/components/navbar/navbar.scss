@@ -1,0 +1,35 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+
+    color: #fff;
+    padding: 10px 20px;
+  
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+
+    
+    }
+  
+    img {
+        width: 40px;
+        height: 40px;
+        border-radius: 30%;
+        background-color: red;
+        cursor: pointer;
+      }
+  
+    .sign-out {
+      cursor: pointer;
+      background-color: #ff4500;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+  
+      &:hover {
+        background-color: #ff6347;
+      }
+    }
+  }
+  

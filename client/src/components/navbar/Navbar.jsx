@@ -1,14 +1,22 @@
-import React from 'react'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import './navbar.scss';
 
 const Navbar = () => {
-  return (
-    <>
-      <div>logo</div>
-      <div>Sign</div>
-    
-    </>
-  
-  )
-}
+  const navigate = useNavigate();
 
-export default Navbar
+  return (
+    <nav className="navbar">
+      <img 
+        src="assets/logoBarBoom.jpg" 
+        alt="logo" 
+        className="logo-image" 
+        onClick={() => navigate('/')}
+      />
+      <div className="sign-out">Sign Out</div>
+    </nav>
+  );
+};
+
+export default Navbar;
+

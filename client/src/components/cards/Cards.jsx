@@ -35,13 +35,14 @@ const Cards = () => {
     dispatch(
       createTask({
         title: goalName,
-        description: goalDescription || `${goalType.charAt(0).toUpperCase() + goalType.slice(1)} Goal`, // Default description if none provided
+        description: goalDescription,
         progress: 0,
-        completed: false, // Default value for completed
-        goalType: goalType, // Daily, Weekly, Monthly
+        completed: false,
+        goalType,
         dueDate: goalDate,
       })
     );
+    
 
     // Navigate to the respective page based on the goal type
     setShowModal(false);
@@ -72,7 +73,7 @@ const Cards = () => {
       </div>
 
       {/* Modal for Goal Creation */}
-      {showModal && (
+      {/* {showModal && (
         <div className='modal-overlay'>
           <div className='modal'>
             <h3>Create {goalType.charAt(0).toUpperCase() + goalType.slice(1)} Goal</h3>
@@ -115,7 +116,7 @@ const Cards = () => {
             </form>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
