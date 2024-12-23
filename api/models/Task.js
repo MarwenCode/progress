@@ -7,9 +7,6 @@ const taskSchema = new Schema(
       type: String,
       required: [true, 'Please add a title'],
     },
-    description: {
-      type: String,
-    },
     progress: {
       type: Number,
       default: 0, // Start progress at 0%
@@ -17,6 +14,10 @@ const taskSchema = new Schema(
     completed: {
       type: Boolean,
       default: false,
+    },
+    icon: {
+      type: String,
+      required: true,
     },
   },
   {

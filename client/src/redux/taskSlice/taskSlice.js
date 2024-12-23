@@ -1,38 +1,62 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Define the initial state
+const API_URL = 'http://localhost:5000/api/tasks';
+
 const initialState = {
   tasks: [],
   loading: false,
   error: null,
 };
 
-// Create an async function to get tasks
-const getTasks = createAsyncThunk('tasks/get', async () => {
-  const response = await fetch('http://localhost:5000/api/tasks');
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch tasks');
+export const getTasks = createAsyncThunk('tasks/get', async (_, { rejectWithValue }) => {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) {
+      throw new Error('Failed to fetch tasks');
+    }
+    return await response.json();
+  } catch (error) {
+    return rejectWithValue(error.message);
   }
-
-  return response.json();
 });
 
-// Create an async function to post task
-const createTask = createAsyncThunk('tasks/create', async (taskData) => {
-  const response = await fetch('http://localhost:5000/api/tasks', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(taskData),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to create task');
+export const createTask = createAsyncThunk('tasks/create', async (taskData, { rejectWithValue }) => {
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(taskData),
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return rejectWithValue(error);
+    }
+    return await response.json();
+  } catch (error) {
+    return rejectWithValue(error.message);
   }
+});
 
-  return response.json();
+export const updateTask = createAsyncThunk('tasks/update', async (taskData, { rejectWithValue }) => {
+  const { id, ...updates } = taskData;
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updates),
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      return rejectWithValue(error);
+    }
+    return await response.json();
+  } catch (error) {
+    return rejectWithValue(error.message);
+  }
 });
 
 const taskSlice = createSlice({
@@ -50,7 +74,7 @@ const taskSlice = createSlice({
       })
       .addCase(getTasks.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
       })
       .addCase(createTask.pending, (state) => {
         state.loading = true;
@@ -61,10 +85,24 @@ const taskSlice = createSlice({
       })
       .addCase(createTask.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload;
+      })
+      .addCase(updateTask.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.tasks.findIndex((task) => task._id === action.payload._id);
+        if (index !== -1) {
+          state.tasks[index] = action.payload;
+        }
+      })
+      .addCase(updateTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
 export default taskSlice.reducer;
-export { getTasks, createTask };
+
