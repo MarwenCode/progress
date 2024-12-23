@@ -1,6 +1,5 @@
 import { Schema, model } from 'mongoose';
 
-// Define the schema for tasks
 const taskSchema = new Schema(
   {
     title: {
@@ -9,20 +8,21 @@ const taskSchema = new Schema(
     },
     progress: {
       type: Number,
-      default: 0, // Start progress at 0%
+      default: 0,
     },
     completed: {
       type: Boolean,
       default: false,
     },
-    icon: {
-      type: String,
-      required: true,
-    },
+    icon: { type: String, default: 'tree' },
   },
   {
-    timestamps: true, // Automatically add createdAt and updatedAt fields
+    timestamps: true,
   }
 );
 
 export default model('Task', taskSchema);
+
+
+
+

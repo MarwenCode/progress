@@ -6,7 +6,7 @@ const router = Router();  // Corrected the router initialization
 // Define routes
 router.get('/', getTasks);  // Get all tasks
 router.post('/', createTask);  // Create a new task
-router.put('/tasks/:id', updateTask);
+router.put('/:id', updateTask);
 
 
 export default router;

@@ -1,67 +1,61 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/tasks';
-
-const initialState = {
-  tasks: [],
-  loading: false,
-  error: null,
-};
-
-export const getTasks = createAsyncThunk('tasks/get', async (_, { rejectWithValue }) => {
-  try {
-    const response = await fetch(API_URL);
-    if (!response.ok) {
-      throw new Error('Failed to fetch tasks');
+// Fetch tasks
+export const getTasks = createAsyncThunk(
+  'tasks/getTasks',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/tasks');
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message || 'Failed to fetch tasks');
     }
-    return await response.json();
+  }
+);
+
+// Create a task
+export const createTask = createAsyncThunk(
+  'tasks/createTask',
+  async (task, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/tasks', task);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message || 'Failed to create task');
+    }
+  }
+);
+
+// Update task (checkbox toggle functionality)
+export const updateTask = createAsyncThunk("tasks/updateTask", async ({ id, progress }, thunkAPI) => {
+  try {
+    console.log("Dispatching updateTask with ID:", id); // Log task ID
+    console.log("Progress value being updated:", progress); // Log progress value
+
+    const response = await axios.put(`http://localhost:5000/api/tasks/${id}`, { progress });
+    console.log("Response from server:", response.data); // Log server response
+
+    return response.data;
   } catch (error) {
-    return rejectWithValue(error.message);
+    console.error("Error in updateTask:", error); // Log error if any
+    if (error.response) {
+      console.error("Error response from server:", error.response.data); // Log error response from the server
+    }
+    return thunkAPI.rejectWithValue(error.response ? error.response.data : error.message);
   }
 });
 
-export const createTask = createAsyncThunk('tasks/create', async (taskData, { rejectWithValue }) => {
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(taskData),
-    });
-    if (!response.ok) {
-      const error = await response.json();
-      return rejectWithValue(error);
-    }
-    return await response.json();
-  } catch (error) {
-    return rejectWithValue(error.message);
-  }
-});
 
-export const updateTask = createAsyncThunk('tasks/update', async (taskData, { rejectWithValue }) => {
-  const { id, ...updates } = taskData;
-  try {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updates),
-    });
-    if (!response.ok) {
-      const error = await response.json();
-      return rejectWithValue(error);
-    }
-    return await response.json();
-  } catch (error) {
-    return rejectWithValue(error.message);
-  }
-});
 
+// Task slice
 const taskSlice = createSlice({
   name: 'tasks',
-  initialState,
+  initialState: {
+    tasks: [],
+    loading: false,
+    error: null,
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -105,4 +99,3 @@ const taskSlice = createSlice({
 });
 
 export default taskSlice.reducer;
-
