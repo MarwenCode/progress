@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTasks, createTask, updateTask } from "../../redux/taskSlice/taskSlice";
+import { getTasks, createTask, updateTask, deleteTask } from "../../redux/taskSlice/taskSlice";
 import { FaDragon } from "react-icons/fa";
 import { PiTreePalmLight } from "react-icons/pi";
 import { CiCoffeeCup } from "react-icons/ci";
+import { RiDeleteBinLine } from "react-icons/ri";
 import Navbar from "../../components/navbar/Navbar";
 import "./daily.scss";
 
@@ -13,21 +14,11 @@ const ICONS = {
   dragon: <FaDragon className="icon dragon" />,
 };
 
-const TaskList = ({ tasks, handleTaskCheck }) => (
-  <ul>
-    {tasks.map((task) => (
-      <li key={task._id}>
-        <input
-          type="checkbox"
-          checked={task.progress === 100}
-          onChange={() => handleTaskCheck(task._id, task.progress)}
-        />
-        <span>{task.title}</span>
-        <div className="icon-wrapper">{ICONS[task.icon]}</div>
-      </li>
-    ))}
-  </ul>
-);
+
+
+
+
+
 
 const Daily = () => {
   const dispatch = useDispatch();
@@ -90,6 +81,39 @@ const Daily = () => {
     setSelectedIcon(icon);
     setIconModalOpen(false); // Close icon selection modal
   };
+
+
+  const handleDeleteTask = (taskId) => {
+    dispatch(deleteTask(taskId)) // Dispatch the deleteTask action
+      .unwrap()
+      .then(() => {
+        console.log(`Task with ID: ${taskId} deleted successfully`);
+        dispatch(getTasks());
+      })
+      .catch((err) => {
+        console.error(`Failed to delete task with ID: ${taskId}`, err);
+      });
+  };
+
+  const TaskList = ({ tasks, handleTaskCheck }) => (
+    <ul className="tasks-list">
+      {tasks.map((task) => (
+        <li key={task._id} className="task-item">
+          <input
+            type="checkbox"
+            checked={task.progress === 100}
+            onChange={() => handleTaskCheck(task._id, task.progress)}
+          />
+          <span className="task-title">{task.title}</span>
+          <div className="icon-wrapper">{ICONS[task.icon]}</div>
+          <div className="deleteButton"  > <RiDeleteBinLine onClick={() => handleDeleteTask(task._id)}    /></div>
+        </li>
+      ))}
+    </ul>
+  );
+  
+ 
+
 
   return (
     <div className="daily-container">
