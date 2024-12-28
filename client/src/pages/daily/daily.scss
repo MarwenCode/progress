@@ -1,5 +1,5 @@
 .daily-container {
-  background: linear-gradient(135deg, #ff73d1, #1e90ff);
+ 
   min-height: 100vh;
   padding: 20px;
   color: #fff;
@@ -45,45 +45,50 @@
       }
 
       .tasks-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
+        .task-item {
+          display: flex; 
+          align-items: center; 
+          gap: 8px; /* Space between children */
+          padding: 8px 0; /* Optional: Adjust padding for spacing */
       
-      .task-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        gap: 10px; 
-      }
+          input[type="checkbox"] {
+            margin-right: 8px; /* Space between checkbox and text */
+          }
       
-      .task-title {
-        flex-grow: 1; 
-        text-align: left; 
-        font-size: 1rem; 
-      }
+          .task-title {
+            flex: 1; 
+            text-transform: capitalize;
+            text-align: left; 
+            cursor: pointer;
+            
+          }
       
-      .icon-wrapper {
-        flex-shrink: 0; 
-      }
-      .deleteButton {
-        color: #fff;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 1.5rem;
-        cursor: pointer;
-        font-weight: bold;
-        transition: background 0.3s, transform 0.3s;
-
-        &:hover {
-          transform: scale(1.05);
+          .icon-wrapper, 
+          .deleteButton {
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.3s;
+    
+            &:hover {
+              transform: scale(1.05);
+            }
+    
+          
+    
+          }
         }
-
-      
-
       }
       
+      
+
+
+
+
 
     }
 
@@ -281,6 +286,7 @@
           transition: background 0.3s, transform 0.3s;
 
           &:hover {
+            background: rgba(0, 0, 0, 0.9);
             transform: scale(1.05);
           }
         }
@@ -297,6 +303,7 @@
     }
   }
 
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -305,4 +312,17 @@
       opacity: 1;
     }
   }
+  
+  .animate {
+    animation: fadeIn 1.5s ease-in-out;
+  }
+
+
+
+
+
+  
+
 }
+
+

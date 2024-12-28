@@ -5,7 +5,8 @@ import { FaDragon } from "react-icons/fa";
 import { PiTreePalmLight } from "react-icons/pi";
 import { CiCoffeeCup } from "react-icons/ci";
 import { RiDeleteBinLine } from "react-icons/ri";
-import Navbar from "../../components/navbar/Navbar";
+
+
 import "./daily.scss";
 
 const ICONS = {
@@ -13,9 +14,6 @@ const ICONS = {
   mug: <CiCoffeeCup className="icon mug" />,
   dragon: <FaDragon className="icon dragon" />,
 };
-
-
-
 
 
 
@@ -33,24 +31,43 @@ const Daily = () => {
   const [iconModalOpen, setIconModalOpen] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState("tree");
 
+  //animation task
+
+  const [animate, setAnimate] = useState(false);
+
   useEffect(() => {
     dispatch(getTasks());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (animate) {
+      // Trigger the animation
+      const taskItem = document.querySelector('.task-item:last-child');
+      if (taskItem) {
+        taskItem.classList.add('animate');
+        setTimeout(() => {
+          taskItem.classList.remove('animate');
+          setAnimate(false); // Reset animation state
+        }, 1000); // Duration of the animation
+      }
+    }
+  }, [animate]);
+
   const handleAddTask = () => {
     if (newTask.trim()) {
-      const taskData = { title: newTask, icon: selectedIcon }; // Send task title and icon
+      const taskData = { title: newTask, icon: selectedIcon }; 
       dispatch(createTask(taskData))
         .unwrap()
         .then((task) => {
           console.log("Task added successfully:", task);
+          setAnimate(true);
         })
         .catch((err) => {
           console.error("Failed to add task:", err);
         });
 
       setNewTask(""); // Reset input after task is added
-      setModalOpen(false); // Close the modal
+      setModalOpen(false); 
     }
   };
 
@@ -118,12 +135,14 @@ const Daily = () => {
   return (
     <div className="daily-container">
       <div className="box">
-        <Navbar />
-        <div className="header">
+      
+      <div className="header">
           <h1>Daily Goal</h1>
           {selectedBarIcon}
           <p className="percent">{completedProgress.toFixed(0)}%</p>
         </div>
+
+
 
         <div className="goal-section">
           <button onClick={() => setProgressBarOpen(true)}>Choose Your Bar</button>

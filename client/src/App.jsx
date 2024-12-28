@@ -11,11 +11,14 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Daily from "./pages/daily/Daily";
 import Weekly from "./pages/weekly/Weekly";
 import Monthly from "./pages/monthly/Monthly";
+import Navbar from "./components/navbar/Navbar";
+
 
 function App() {
   return (
     <Router>
       <div className="container">
+      <Navbar />
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/daily" element={<Daily />} />

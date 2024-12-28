@@ -1,0 +1,272 @@
+.weekly-container {
+  max-width: 600px;
+  margin: -20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .progress-bar-container,
+  .day-selector-container {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .day-selector {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+
+        input {
+          transform: scale(1.2);
+        }
+      }
+    }
+  }
+
+  .add-goal-btn {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+
+  .goal-table-container {
+    margin-top: 40px;
+    text-align: left;
+  }
+
+  .goal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    th,
+    td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+
+    td {
+      background-color: #fafafa;
+    }
+  }
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+
+    h3 {
+      margin-bottom: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+    }
+
+    .submit-btn,
+    .cancel-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+
+    .cancel-btn {
+      background-color: #dc3545;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+}
+
+.note-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.note-container span {
+  cursor: pointer;
+}
+
+.edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 8px;
+}
+
+
+.current-goal {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+
+  h3 {
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 5px 0;
+  }
+
+  .delete-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+}
+
+.goal-actions {
+  display: flex;
+  gap: 10px;
+
+  .edit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .delete-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+}
+
+
+.current-goal-info {
+  background: #f5f5f5;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  
+  h3 {
+    margin: 0 0 0.5rem 0;
+  }
+  
+  p {
+    margin: 0.25rem 0;
+  }
+}
+
+.goal-history {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 4px;
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    
+    li {
+      margin: 1rem 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}
+

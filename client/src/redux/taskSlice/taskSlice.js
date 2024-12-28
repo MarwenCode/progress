@@ -6,7 +6,7 @@ export const getTasks = createAsyncThunk(
   "tasks/getTasks",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:5000/api/tasks");
+      const response = await axios.get("http://localhost:5000/api/tasks/daily");
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -22,7 +22,7 @@ export const createTask = createAsyncThunk(
   async (task, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/tasks",
+        "http://localhost:5000/api/tasks/daily",
         task
       );
       return response.data;
@@ -43,7 +43,7 @@ export const updateTask = createAsyncThunk(
       console.log("Progress value being updated:", progress); // Log progress value
 
       const response = await axios.put(
-        `http://localhost:5000/api/tasks/${id}`,
+        `http://localhost:5000/api/tasks/daily/${id}`,
         { progress }
       );
       console.log("Response from server:", response.data); // Log server response
@@ -68,7 +68,7 @@ export const deleteTask = createAsyncThunk(
     try {
       console.log("Deleting task with ID:", id);
       const response = await axios.delete(
-        `http://localhost:5000/api/tasks/${id}`
+        `http://localhost:5000/api/tasks/daily/${id}`
       );
       console.log("Task deleted:", response.data);
       return id; // Return the ID of the deleted task

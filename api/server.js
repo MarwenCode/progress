@@ -4,6 +4,8 @@ import cors from 'cors'; // Import cors middleware
 import connectDB from './config/db.js'; // Database connection
 import taskRoutes from './routes/taskRoutes.js'; // Import task routes
 
+
+
 // Load environment variables from .env
 config();
 
@@ -26,7 +28,8 @@ app.options('*', cors()); // Handle preflight requests
 app.use(express.json()); // Parse JSON payloads
 
 // Routes
-app.use('/api/tasks', taskRoutes); // Task-related routes
+app.use('/api/tasks/', taskRoutes); // Task-related routes
+
 
 // Root route
 app.get('/', (req, res) => {
