@@ -25,18 +25,59 @@ export const createWeeklyGoal = createAsyncThunk(
   "weekly/createWeeklyGoal",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/tasks/weekly",
-        data
-      );
+      console.log("Creating weekly goal with data:", data); // Log the data being sent
+      const response = await axios.post("http://localhost:5000/api/tasks/weekly", data);
+      console.log("Response from server:", response.data); // Log the server's response
       return response.data;
     } catch (error) {
+      console.error("Error in createWeeklyGoal:", error.response || error.message); // Log any errors
       return rejectWithValue(
-        error.response.data.message || "Failed to create task"
+        error.response?.data?.message || "Failed to create task"
       );
     }
   }
 );
+
+
+export const updateWeeklyGoal = createAsyncThunk(
+  "weekly/updateWeeklyGoal",
+  async ({ id, selectedDays }, thunkAPI) => {
+    try {
+      console.log("Updating goal with ID:", id); // Debugging log
+      const response = await axios.put(`http://localhost:5000/api/tasks/weekly/${id}`, {
+        selectedDays,
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error updating weekly goal:", error);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+
+//delete a weekly Goal
+export const deleteWeeklyGoal = createAsyncThunk(
+  "weekly/deleteWeeklyGoal",
+  async (id, { rejectWithValue }) => {
+    try {
+      console.log("Deleting goal with ID:", id);
+      await axios.delete(`http://localhost:5000/api/tasks/weekly/${id}`);
+      console.log("Successfully deleted goal with ID:", id);
+      return id;
+    } catch (error) {
+      console.error("Error deleting goal:", error);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to delete task"
+      );
+    }
+  }
+);
+
+
+
+
 
 // Goal Slice
 const weeklySlice = createSlice({
@@ -78,6 +119,21 @@ const weeklySlice = createSlice({
       .addCase(createWeeklyGoal.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(updateWeeklyGoal.fulfilled, (state, action) => {
+        const updatedGoal = action.payload;
+        const index = state.weeklyGoal.findIndex(goal => goal._id === updatedGoal._id);
+        if (index !== -1) {
+          state.weeklyGoal[index] = updatedGoal; // Update the specific goal
+        }
+      })
+      
+      .addCase(deleteWeeklyGoal.fulfilled, (state, action) => {
+        console.log("Reducer payload:", action.payload);
+        state.weeklyGoal = state.weeklyGoal.filter(
+          (goal) => goal._id !== action.payload
+        );
+        console.log("Updated state:", state.weeklyGoal);
       });
   }
 });

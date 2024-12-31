@@ -1,7 +1,8 @@
 // models/Weekly.js
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-const weeklySchema = new mongoose.Schema({
+
+const weeklySchema = new Schema({
   name: {
     type: String,
     required: true
@@ -25,6 +26,5 @@ const weeklySchema = new mongoose.Schema({
   timestamps: true
 });
 
-const Weekly = mongoose.model('Weekly', weeklySchema);
+export default model('Weekly', weeklySchema);
 
-export default Weekly;
