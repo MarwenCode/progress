@@ -55,6 +55,28 @@ export const updateWeeklyGoal = createAsyncThunk(
   }
 );
 
+//update notes
+export const updateNotes = createAsyncThunk(
+  "weekly/updateNotes",
+  async ({ id, notes }, { rejectWithValue }) => {
+    try {
+      console.log("Updating notes with ID:", id); // Debugging log
+      console.log("Notes data:", notes); // Debugging log
+      const response = await axios.put(
+        `http://localhost:5000/api/tasks/weekly/notes/${id}`, // Ensure this matches the backend route
+        { notes } // Send notes in the request body
+      );
+      console.log("Response from server:", response.data); // Debugging log
+      return response.data;
+    } catch (error) {
+      console.error("Error updating notes:", error.response?.data || error.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+
+
 
 
 //delete a weekly Goal
@@ -134,6 +156,25 @@ const weeklySlice = createSlice({
           (goal) => goal._id !== action.payload
         );
         console.log("Updated state:", state.weeklyGoal);
+      })
+      // Handle pending state for updateNotes
+      .addCase(updateNotes.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      // Handle fulfilled state for updateNotes
+      .addCase(updateNotes.fulfilled, (state, action) => {
+        state.loading = false;
+        const updatedGoal = action.payload;
+        const goalIndex = state.weeklyGoal.findIndex((goal) => goal._id === updatedGoal._id);
+        if (goalIndex !== -1) {
+          state.weeklyGoal[goalIndex].notes = updatedGoal.notes;
+        }
+      })
+      // Handle rejected state for updateNotes
+      .addCase(updateNotes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to update notes";
       });
   }
 });

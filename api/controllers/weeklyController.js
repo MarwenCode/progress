@@ -53,7 +53,36 @@ console.log("Goal ID from request:", id); // Debugging log
   }
 };
 
+// Update only the notes field of a weekly goal
+export const updateWeeklyGoalNotes = async (req, res) => {
+  const { id } = req.params; // Extract the id from the URL
+  const { notes } = req.body; // Extract the notes field from the request body
 
+  console.log("Received update request for notes with ID:", id); // Debugging log
+  console.log("Notes data:", notes); // Debugging log
+
+  if (!notes || typeof notes !== "object") {
+    return res.status(400).json({ message: "Invalid notes data" });
+  }
+
+  try {
+    const updatedGoal = await Weekly.findByIdAndUpdate(
+      id,
+      { $set: { notes } }, // Explicitly update the notes field
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedGoal) {
+      return res.status(404).json({ message: "Goal not found" });
+    }
+
+    console.log("Updated goal notes in database:", updatedGoal); // Debugging log
+    res.status(200).json(updatedGoal);
+  } catch (error) {
+    console.error("Error updating goal notes:", error);
+    res.status(500).json({ message: "Failed to update goal notes" });
+  }
+};
 
 //delete a weekly Goal 
 export const deleteWeeklyGoal = async (req, res) => {

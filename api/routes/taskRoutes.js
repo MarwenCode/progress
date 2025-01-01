@@ -1,6 +1,6 @@
 import { Router } from 'express';  // Ensure this import is correct
 import { getTasks, createTask, updateTask, deleteTask  } from '../controllers/taskController.js';
-import { createWeeklyGoal, getWeeklyGoal, deleteWeeklyGoal, updateWeeklyGoal } from '../controllers/weeklyController.js';
+import { createWeeklyGoal, getWeeklyGoal, deleteWeeklyGoal, updateWeeklyGoal, updateWeeklyGoalNotes } from '../controllers/weeklyController.js';
 
 const router = Router();  // Corrected the router initialization
 
@@ -17,6 +17,9 @@ router.post("/weekly", createWeeklyGoal);
 router.get("/weekly", getWeeklyGoal);
 router.put('/weekly/:id', updateWeeklyGoal);
 router.delete("/weekly/:id", deleteWeeklyGoal);
+
+// New route for updating notes
+router.put("/weekly/notes/:id", updateWeeklyGoalNotes);
 
 
 export default router;
