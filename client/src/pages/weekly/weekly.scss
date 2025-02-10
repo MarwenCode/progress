@@ -103,7 +103,7 @@
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    max-width: 400px;
+    max-width: 500px;
     width: 100%;
 
     h3 {
@@ -112,25 +112,33 @@
 
     .form-group {
       margin-bottom: 20px;
-
+    
       label {
         display: block;
         font-weight: bold;
         margin-bottom: 5px;
       }
-
+    
       input,
       textarea {
-        width: 100%;
+        width: 90%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        resize: none; /* Prevents resizing for textarea */
+        text-align: left; /* Ensures text starts from the left */
+        direction: ltr; /* Ensures text direction is left-to-right */
+        white-space: pre-wrap; /* Preserves line breaks and spaces */
+        display: block; /* Ensures the element takes up the full width */
+        margin: 0; /* Removes any default margin */
       }
     }
 
+
+
     .submit-btn,
     .cancel-btn {
-      background-color: #007bff;
+      background: linear-gradient(135deg, #ff6f61, #ffb347);
       color: white;
       border: none;
       padding: 10px 15px;
@@ -139,15 +147,15 @@
       margin-right: 10px;
 
       &:hover {
-        background-color: #0056b3;
+        transform: scale(1.05);
       }
     }
 
     .cancel-btn {
-      background-color: #dc3545;
+      background: linear-gradient(135deg, #ff6f61, #ffb347);
 
       &:hover {
-        background-color: #c82333;
+        transform: scale(1.05);
       }
     }
   }
@@ -223,6 +231,8 @@
     background-color: #45a049;
   }
 }
+
+
 
 /* Current Goal Info */
 .current-goal-info {

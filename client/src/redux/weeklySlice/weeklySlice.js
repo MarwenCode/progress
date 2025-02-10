@@ -4,33 +4,41 @@ import axios from "axios";
 //Fetch weekly Goal
 
 export const getWeeklyGoal = createAsyncThunk(
-    "weekly/getWeeklyGoal",
-    async (_, { rejectWithValue }) => {
-      try {
-        console.log("Fetching weekly goals"); // Add this
-        const response = await axios.get("http://localhost:5000/api/tasks/weekly");
-        console.log("Response:", response.data); // Add this
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching goals:", error); // Add this
-        return rejectWithValue(
-          error.response?.data?.message || "Failed to fetch tasks"
-        );
-      }
+  "weekly/getWeeklyGoal",
+  async (_, { rejectWithValue }) => {
+    try {
+      console.log("Fetching weekly goals"); // Add this
+      const response = await axios.get(
+        "http://localhost:5000/api/tasks/weekly"
+      );
+      console.log("Response:", response.data); // Add this
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching goals:", error); // Add this
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch tasks"
+      );
     }
-  );
+  }
+);
 
-//create a weekly Goal 
+//create a weekly Goal
 export const createWeeklyGoal = createAsyncThunk(
   "weekly/createWeeklyGoal",
   async (data, { rejectWithValue }) => {
     try {
       console.log("Creating weekly goal with data:", data); // Log the data being sent
-      const response = await axios.post("http://localhost:5000/api/tasks/weekly", data);
+      const response = await axios.post(
+        "http://localhost:5000/api/tasks/weekly",
+        data
+      );
       console.log("Response from server:", response.data); // Log the server's response
       return response.data;
     } catch (error) {
-      console.error("Error in createWeeklyGoal:", error.response || error.message); // Log any errors
+      console.error(
+        "Error in createWeeklyGoal:",
+        error.response || error.message
+      ); // Log any errors
       return rejectWithValue(
         error.response?.data?.message || "Failed to create task"
       );
@@ -38,22 +46,32 @@ export const createWeeklyGoal = createAsyncThunk(
   }
 );
 
+// AsyncThunk for Updating Weekly Goal
+// export const updateWeeklyGoal = createAsyncThunk(
+//   "weekly/updateWeeklyGoal",
+//   async ({ id, data }, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.put(`http://localhost:5000/api/tasks/weekly/${id}`, data);
+//       return response.data;
+//     } catch (error) {
+//       return rejectWithValue(error.response.data);
+//     }
+//   }
+// );
+
 
 export const updateWeeklyGoal = createAsyncThunk(
   "weekly/updateWeeklyGoal",
-  async ({ id, selectedDays }, thunkAPI) => {
+  async ({ id, updates }, { rejectWithValue }) => { // Changement ici: `updates` au lieu de `data`
     try {
-      console.log("Updating goal with ID:", id); // Debugging log
-      const response = await axios.put(`http://localhost:5000/api/tasks/weekly/${id}`, {
-        selectedDays,
-      });
+      const response = await axios.put(`http://localhost:5000/api/tasks/weekly/${id}`, updates);
       return response.data;
     } catch (error) {
-      console.error("Error updating weekly goal:", error);
-      return thunkAPI.rejectWithValue(error.response.data);
+      return rejectWithValue(error.response?.data || "Erreur de mise à jour.");
     }
   }
 );
+
 
 //update notes
 export const updateNotes = createAsyncThunk(
@@ -69,15 +87,14 @@ export const updateNotes = createAsyncThunk(
       console.log("Response from server:", response.data); // Debugging log
       return response.data;
     } catch (error) {
-      console.error("Error updating notes:", error.response?.data || error.message);
+      console.error(
+        "Error updating notes:",
+        error.response?.data || error.message
+      );
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
-
-
-
-
 
 //delete a weekly Goal
 export const deleteWeeklyGoal = createAsyncThunk(
@@ -97,10 +114,6 @@ export const deleteWeeklyGoal = createAsyncThunk(
   }
 );
 
-
-
-
-
 // Goal Slice
 const weeklySlice = createSlice({
   name: "weekly",
@@ -108,7 +121,6 @@ const weeklySlice = createSlice({
     weeklyGoal: [],
     loading: false,
     error: null,
-    
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -142,21 +154,32 @@ const weeklySlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(updateWeeklyGoal.fulfilled, (state, action) => {
-        const updatedGoal = action.payload;
-        const index = state.weeklyGoal.findIndex(goal => goal._id === updatedGoal._id);
-        if (index !== -1) {
-          state.weeklyGoal[index] = updatedGoal; // Update the specific goal
-        }
-      })
-      
-      .addCase(deleteWeeklyGoal.fulfilled, (state, action) => {
-        console.log("Reducer payload:", action.payload);
-        state.weeklyGoal = state.weeklyGoal.filter(
-          (goal) => goal._id !== action.payload
-        );
-        console.log("Updated state:", state.weeklyGoal);
-      })
+      // Update Weekly Goal
+
+      // Update Weekly Goal
+      // Update Weekly Goal
+    // Update Weekly Goal
+// Reducer dans le slice Redux
+.addCase(updateWeeklyGoal.fulfilled, (state, action) => {
+  const { _id, ...updates } = action.payload;
+  state.weeklyGoal = state.weeklyGoal.map(goal =>
+    goal._id === _id ? { ...goal, ...updates } : goal
+  );
+
+  console.log("État Redux mis à jour :", state.weeklyGoal); // Debugging
+})
+
+
+
+
+// Delete Weekly Goal
+.addCase(deleteWeeklyGoal.fulfilled, (state, action) => {
+  state.loading = false;
+  const deletedGoalId = action.payload;
+
+  // Update the weeklyGoal array by filtering out the deleted goal
+  state.weeklyGoal = state.weeklyGoal.filter(goal => goal._id !== deletedGoalId);
+})
       // Handle pending state for updateNotes
       .addCase(updateNotes.pending, (state) => {
         state.loading = true;
@@ -166,7 +189,9 @@ const weeklySlice = createSlice({
       .addCase(updateNotes.fulfilled, (state, action) => {
         state.loading = false;
         const updatedGoal = action.payload;
-        const goalIndex = state.weeklyGoal.findIndex((goal) => goal._id === updatedGoal._id);
+        const goalIndex = state.weeklyGoal.findIndex(
+          (goal) => goal._id === updatedGoal._id
+        );
         if (goalIndex !== -1) {
           state.weeklyGoal[goalIndex].notes = updatedGoal.notes;
         }
@@ -176,8 +201,7 @@ const weeklySlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Failed to update notes";
       });
-  }
+  },
 });
-
 
 export default weeklySlice.reducer;

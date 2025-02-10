@@ -8,7 +8,7 @@ import {
   updateWeeklyGoal,
   updateNotes,
 } from "../../redux/weeklySlice/weeklySlice";
-import { RiPencilLine ,RiDeleteBinLine } from "react-icons/ri";
+import { RiPencilLine, RiDeleteBinLine } from "react-icons/ri";
 import "./weekly.scss";
 
 // ProgressBar Component
@@ -75,6 +75,7 @@ const Weekly = () => {
   const [notes, setNotes] = useState({});
   const [editingDay, setEditingDay] = useState(null);
   const [editedNote, setEditedNote] = useState(""); // Track the edited note
+  const [isEditing, setIsEditing] = useState(false); // Track if editing an existing goal
 
   // Fetch goals on component mount
   useEffect(() => {
@@ -131,34 +132,86 @@ const Weekly = () => {
     }
   };
 
-  const handleSubmitGoal = async () => {
+  // Function to handle creating a new goal
+  const handleCreateGoal = async () => {
     const goalData = {
       name: goalName,
       selectedDays,
       details: goalDetails,
-      notes: {},
+      notes,
       progress: (selectedDays.length / 7) * 100,
     };
 
     try {
       await dispatch(createWeeklyGoal(goalData)).unwrap();
+
+      // Reset form fields and edit mode
       setShowModal(false);
       dispatch(getWeeklyGoal());
+      setGoalName("");
+      setSelectedDays([]);
+      setGoalDetails("");
+      setNotes({});
+      setProgress(0);
     } catch (err) {
       console.error("Failed to create goal:", err);
     }
   };
 
-  const handleDeleteWeeklyGoal = async (goalID) => {
+  // Function to handle editing an existing goal
+
+
+
+  const handleEditGoal = async () => {
+    if (weeklyGoal.length === 0) {
+      console.log("Aucun objectif trouvé pour modification.");
+      return;
+    }
+  
+    const goalId = weeklyGoal[weeklyGoal.length - 1]._id;
+    console.log("ID envoyé pour mise à jour:", goalId);
+  
+    const goalData = {
+      name: goalName,
+      selectedDays,
+      details: goalDetails,
+      notes,
+      progress: (selectedDays.length / 7) * 100,
+    };
+  
     try {
-      await dispatch(deleteWeeklyGoal(goalID)).unwrap();
-      dispatch(getWeeklyGoal());
-      setSelectedDays("");
+      console.log("État avant mise à jour:", weeklyGoal);
+  
+      const response = await dispatch(
+        updateWeeklyGoal({ id: goalId, updates: goalData }) // Correction ici
+      ).unwrap();
+  
+      console.log("Réponse après mise à jour:", response);
+  
+      dispatch(getWeeklyGoal()); // Recharge les données après mise à jour
+  
+      // Réinitialisation des champs
+      setShowModal(false);
+      setGoalName("");
+      setSelectedDays([]);
+      setGoalDetails("");
       setNotes({});
+      setProgress(0);
+      setIsEditing(false);
     } catch (err) {
-      console.error(`Failed to delete goal with ID: ${goalID}`, err);
+      console.error("Échec de la modification de l'objectif:", err);
     }
   };
+
+  useEffect(() => {
+    console.log("État Redux après mise à jour:", weeklyGoal);
+  }, [weeklyGoal]);
+  
+  
+
+  useEffect(() => {
+    console.log("Weekly goals updated:", weeklyGoal); // Debugging log
+  }, [weeklyGoal]);
 
   const handleNoteChange = async (day, note) => {
     const updatedNotes = { ...notes, [day]: note };
@@ -180,15 +233,43 @@ const Weekly = () => {
     }
   };
 
-  const handleEditNote = (day) => {
-    setEditingDay(day); // Set the day being edited
-    setEditedNote(notes[day] || ""); // Initialize the edited note
-  };
-
   const handleSaveNote = async (day) => {
     await handleNoteChange(day, editedNote); // Save the edited note
     setEditingDay(null); // Exit edit mode
   };
+
+  const handleDeliteGoal = async () => {
+    if (weeklyGoal.length > 0) {
+      const goalId = weeklyGoal[weeklyGoal.length - 1]._id;
+      try {
+        await dispatch(deleteWeeklyGoal(goalId)).unwrap();
+
+        if (weeklyGoal.length === 1) {
+          // If the deleted goal was the only goal, reset the state
+          setSelectedDays([]);
+          setNotes({});
+          setProgress(0);
+        }
+
+        dispatch(getWeeklyGoal());
+      } catch (err) {
+        console.error("Failed to delete goal:", err);
+      }
+    }
+  };
+
+ 
+  
+  useEffect(() => {
+    if (showModal && weeklyGoal.length > 0) {
+      const latestGoal = weeklyGoal[weeklyGoal.length - 1];
+      setGoalName(latestGoal.name || "");
+      setGoalDetails(latestGoal.details || "");
+    }
+  }, [showModal, weeklyGoal]);
+  
+
+
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -203,9 +284,7 @@ const Weekly = () => {
             <h3>{weeklyGoal[weeklyGoal.length - 1].name}</h3>
             <RiDeleteBinLine
               className="delete-icon"
-              onClick={() =>
-                handleDeleteWeeklyGoal(weeklyGoal[weeklyGoal.length - 1]._id)
-              }
+              onClick={handleDeliteGoal}
             />
           </div>
           <p className="goal-details">
@@ -265,11 +344,12 @@ const Weekly = () => {
                 />
               </div>
               <button
-                type="button"
-                className="submit-btn"
-                onClick={handleSubmitGoal}>
-                Save Goal
-              </button>
+  type="button"
+  className="submit-btn"
+  onClick={weeklyGoal.length === 0 ? handleCreateGoal : handleEditGoal}>
+  {weeklyGoal.length === 0 ? "Enregistrer l'objectif" : "Modifier l'objectif"}
+</button>
+
               <button
                 type="button"
                 className="cancel-btn"
@@ -287,60 +367,64 @@ const Weekly = () => {
         </button>
       )}
 
-      <div className="goal-table-container">
-        <h3>Weekly Goal Table</h3>
-        <table className="goal-table">
-          <thead>
-            <tr>
-              <th>Day</th>
-              <th>Note</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-              "Sunday",
-            ].map((day) => (
-              <tr key={day}>
-                <td>{day}</td>
-<td>
-  <div className="note-container">
-    {editingDay === day ? (
-      <div className="edit-mode">
-        <input
-          type="text"
-          value={editedNote}
-          onChange={(e) => setEditedNote(e.target.value)}
-          placeholder="Add a note"
-        />
-        <button className="save-btn" onClick={() => handleSaveNote(day)}>
-          Save
-        </button>
-      </div>
-    ) : (
-      <div className="view-mode">
-        <span>{notes[day] || "No note added"}</span>
-        <button className="edit-btn" onClick={() => handleEditNote(day)}>
-          <RiPencilLine />
-        </button>
-      </div>
-    )}
-  </div>
-</td>
-                <td>
-                  {selectedDays.includes(day) ? "Selected" : "Not Selected"}
-                </td>
+      {/* {weeklyGoal.length >= 1 && (
+        <div className="goal-table-container">
+          <h3>Weekly Goal Table</h3>
+          <table className="goal-table">
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>Note</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {[
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+              ].map((day) => (
+                <tr key={day}>
+                  <td>{day}</td>
+                  <td>
+                    <div className="note-container">
+                      {editingDay === day ? (
+                        <div className="edit-mode">
+                          <input
+                            type="text"
+                            value={editedNote}
+                            onChange={(e) => setEditedNote(e.target.value)}
+                            placeholder="Add a note"
+                          />
+                          <button
+                            className="save-btn"
+                            onClick={() => handleSaveNote(day)}>
+                            Save
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="view-mode">
+                          <span>{notes[day] || "No note added"}</span>
+                          <button className="edit-btn">
+                            <RiPencilLine />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                  <td>
+                    {selectedDays.includes(day) ? "Selected" : "Not Selected"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )} */}
     </div>
   );
 };

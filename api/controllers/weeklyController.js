@@ -27,31 +27,53 @@ export const createWeeklyGoal = async (req, res) => {
   }
 };
 
-// Update the selectedDays of a weekly goal
+
+
+// Update Weekly Goal
+// export const updateWeeklyGoal = async (req, res) => {
+//   const { id } = req.params; // The ID of the goal to update
+//   const { name, selectedDays, details, notes, progress } = req.body;
+
+//   try {
+//     const updatedGoal = await Weekly.findByIdAndUpdate(
+//       id,
+//       { name, selectedDays, details, notes, progress },
+//       { new: true, runValidators: true } // Return the updated document and validate the input
+//     );
+
+//     if (!updatedGoal) {
+//       return res.status(404).json({ message: 'Weekly goal not found.' });
+//     }
+
+//     res.status(200).json(updatedGoal);
+//   } catch (error) {
+//     res.status(500).json({ message: 'Failed to update weekly goal.', error: error.message });
+//   }
+// };
+
+
 export const updateWeeklyGoal = async (req, res) => {
   const { id } = req.params;
-console.log("Goal ID from request:", id); // Debugging log
-
-  const { selectedDays } = req.body;
+  console.log("ID reçu pour mise à jour:", id); // Debugging
 
   try {
     const updatedGoal = await Weekly.findByIdAndUpdate(
       id,
-      { selectedDays },
-      { new: true } // Return the updated document
+      { ...req.body }, // Mise à jour avec tout le contenu
+      { new: true, runValidators: true }
     );
 
     if (!updatedGoal) {
-      return res.status(404).json({ message: 'Goal not found' });
+      return res.status(404).json({ message: "Objectif hebdomadaire non trouvé." });
     }
 
     res.status(200).json(updatedGoal);
-    console.log('Updated goal:', updatedGoal);
   } catch (error) {
-    console.error('Error updating selected days:', error);
-    res.status(500).json({ message: 'Failed to update selected days' });
+    res.status(500).json({ message: "Échec de la mise à jour.", error: error.message });
   }
 };
+
+
 
 // Update only the notes field of a weekly goal
 export const updateWeeklyGoalNotes = async (req, res) => {

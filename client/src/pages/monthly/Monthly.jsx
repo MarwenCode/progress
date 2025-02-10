@@ -1,21 +1,30 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from "react";
+import "./monthly.scss"; // Import du fichier SCSS
 
 const Monthly = () => {
-  const [goalName, setGoalName] = useState('');
-  const [selectedDays, setSelectedDays] = useState([]);
-  const [goalDetails, setGoalDetails] = useState('');
+  const [goalName, setGoalName] = useState("");
+  const [goalDetails, setGoalDetails] = useState("");
 
-  const handleDayToggle = (day) => {
-    setSelectedDays(prev => 
-      prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+  // Charger les données sauvegardées au montage
+  useEffect(() => {
+    const savedGoal = JSON.parse(localStorage.getItem("monthlyGoal"));
+    if (savedGoal) {
+      setGoalName(savedGoal.name || "");
+      setGoalDetails(savedGoal.details || "");
+    }
+  }, []);
+
+  // Sauvegarder les données à chaque mise à jour
+  useEffect(() => {
+    localStorage.setItem(
+      "monthlyGoal",
+      JSON.stringify({ name: goalName, details: goalDetails })
     );
-  };
+  }, [goalName, goalDetails]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle the goal submission logic for the month
-    console.log('Monthly Goal:', goalName, selectedDays, goalDetails);
+    console.log("Monthly Goal:", goalName, goalDetails);
   };
 
   return (
@@ -31,22 +40,6 @@ const Monthly = () => {
             onChange={(e) => setGoalName(e.target.value)}
             placeholder="e.g., Read 5 books this month"
           />
-        </div>
-
-        <div className="form-group">
-          <label>Select Days for Your Goal:</label>
-          <div className="day-selector">
-            {[...Array(31).keys()].map((day) => (
-              <label key={day}>
-                <input
-                  type="checkbox"
-                  checked={selectedDays.includes(day + 1)}
-                  onChange={() => handleDayToggle(day + 1)}
-                />
-                {day + 1}
-              </label>
-            ))}
-          </div>
         </div>
 
         <div className="form-group">
