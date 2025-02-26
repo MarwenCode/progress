@@ -1,44 +1,60 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/userSlice/UserSlice";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouseChimney, faUserCircle, faArrowRightFromBracket, faArrowRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import Profile from "../profile/Profile"; // Importer la modal
 import './navbar.scss';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  // Récupère l'état de l'utilisateur du store Redux
-  const { user } = useSelector((state) => state.user);
+  const isAuthenticated = localStorage.getItem("token");
+
+  const [isProfileOpen, setIsProfileOpen] = useState(false); // État pour la modal
 
   const handleSignOut = () => {
-    // Dispatch l'action pour se déconnecter (tu devras l'ajouter dans ton reducer)
+    localStorage.removeItem("token");
     dispatch(logout());
-    navigate('/login'); // Redirige vers la page de login après déconnexion
+    navigate('/login');
   };
 
   const handleLogin = () => {
-    navigate('/login'); // Redirige vers la page de login
+    navigate('/login');
   };
 
   return (
     <nav className="navbar">
       <div className="logo" onClick={() => navigate('/')}>
-        {/* Option d'affichage du logo */}
         <img src="assets/BarBoomPic6.png" alt="BarBoom Logo" className="logo-image" />
       </div>
+
+      {isAuthenticated && (
+        <div className="nav-links">
+          <div className="nav-item" onClick={() => navigate('/')}>
+            <FontAwesomeIcon icon={faHouseChimney} />
+          </div>
+          <div className="nav-item" onClick={() => setIsProfileOpen(true)}>
+            <FontAwesomeIcon icon={faUserCircle} />
+          </div>
+        </div>
+      )}
+
       <div className="auth-links">
-        {user ? (
-          // Si l'utilisateur est connecté, afficher "Sign Out"
-          <div className="sign-out" onClick={handleSignOut}>
-            Sign Out
+        {isAuthenticated ? (
+          <div className="nav-item sign-out" onClick={handleSignOut}>
+            <FontAwesomeIcon icon={faArrowRightFromBracket} />
           </div>
         ) : (
-          // Si l'utilisateur n'est pas connecté, afficher "Login"
-          <div className="login" onClick={handleLogin}>
-            Login
+          <div className="nav-item login" onClick={handleLogin}>
+            <FontAwesomeIcon icon={faArrowRightToBracket} />
           </div>
         )}
       </div>
+
+      {/* Afficher la modal si isProfileOpen est true */}
+      <Profile isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
     </nav>
   );
 };
