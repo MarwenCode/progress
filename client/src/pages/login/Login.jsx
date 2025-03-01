@@ -32,43 +32,55 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-    <div className="login-box">
-      <h2>Login</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+<div className="login-container">
+  <div className="login-box">
+    <h2>Login</h2>
+    {error && <p className="error-message">{error}</p>}
+    <form onSubmit={handleSubmit}>
+      <div className="email-container">
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="password-container">
+        <label>Password</label>
+        <div className="password-field">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <button
+            type="button"
+            className="toggle-password"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </button>
         </div>
-        <div className="password-container">
-          <label>Password</label>
-          <div className="password-field">
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-            <button
-              type="button"
-              className="toggle-password"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
-          </div>
-        </div>
-        <button type="submit" className={isLoading ? "disabled" : "login-button"} disabled={isLoading}>
-          {isLoading ? "Loading..." : "Login"}
-        </button>
-      </form>
-      <p className="register-link">
-        Don't have an account? <Link to="/register">Sign up here</Link>
-      </p>
-    </div>
+      </div>
+      <button
+        type="submit"
+        className={isLoading ? "disabled" : "login-button"}
+        disabled={isLoading}
+      >
+        {isLoading ? "Loading..." : "Login"}
+      </button>
+    </form>
+    <p className="register-link">
+      Don't have an account? <Link to="/register">Sign up here</Link>
+    </p>
   </div>
+</div>
+
+
   
   );
 };

@@ -2,122 +2,151 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 70vh;
-
+    height: 100vh;
+    background: linear-gradient(135deg, #ff6f61, #1e90ff);
+    padding: 20px;
+  
     .login-box {
-        background: white;
-        padding: 2rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        width: 350px;
-        text-align: center;
-
-        h2 {
-            font-size: 1.8rem;
-            color: #333;
-            margin-bottom: 1rem;
-        }
-
-        .error-message {
-            color: red;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-
-            label {
-                text-align: left;
-                font-weight: bold;
-                font-size: 0.9rem;
-                color: #555;
-            }
-
-            input {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                font-size: 1rem;
-                transition: all 0.3s ease-in-out;
-
-                &:focus {
-                    border-color: #ff6f61;
-                    outline: none;
-                    box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
-                }
-            }
-
-            // Password field container
-            .password-container {
-                position: relative;
-            }
-
-            .password-field {
-                display: flex;
-                align-items: center;
-                position: relative;
-
-                input {
-                    padding-right: 40px; // Space for the eye icon
-                }
-
-                .toggle-password {
-                    position: absolute;
-                    right: 10px;
-                    background: none;
-                    border: none;
-                    cursor: pointer;
-                    font-size: 18px;
-                    color: #777;
-                    display: flex;
-                    align-items: center;
-
-                    &:hover {
-                        color: #333;
-                    }
-                }
-            }
-
-            .login-button {
-                background-color: #ff6f61;
-                color: white;
-                border: none;
-                padding: 10px;
-                font-size: 1rem;
-                border-radius: 5px;
-                cursor: pointer;
-                transition: background 0.3s;
-
-                &:hover {
-                    background-color: #e65b50;
-                }
-            }
-
-            .disabled {
-                background-color: gray;
-                cursor: not-allowed;
-            }
-        }
-
-        .register-link {
-            margin-top: 1rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      text-align: center;
+  
+      h2 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+  
+      .error-message {
+        color: red;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+  
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+  
+        .email-container {
+          width: 100%;
+  
+          label {
+            text-align: left;
+            font-weight: bold;
             font-size: 0.9rem;
             color: #555;
-
-            a {
-                color: #ff6f61;
-                text-decoration: none;
-                font-weight: bold;
-                transition: color 0.3s;
-
-                &:hover {
-                    color: #e65b50;
-                }
+          }
+  
+          input {
+            width: calc(100% - 40px); // Adjust width similar to password field
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease-in-out;
+  
+            &:focus {
+              border-color: #ff6f61;
+              outline: none;
+              box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
             }
+          }
+  
+          .toggle-placeholder {
+            width: 40px; // Placeholder for consistency with the password field
+          }
         }
+  
+        .password-container {
+          width: 100%;
+  
+          label {
+            text-align: left;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #555;
+          }
+  
+          .password-field {
+            display: flex;
+            align-items: center;
+            position: relative;
+  
+            input {
+              width: calc(100% - 40px); // Similar to email input
+              padding: 10px;
+              border: 1px solid #ccc;
+              border-radius: 5px;
+              font-size: 1rem;
+              transition: all 0.3s ease-in-out;
+  
+              &:focus {
+                border-color: #ff6f61;
+                outline: none;
+                box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+              }
+            }
+  
+            .toggle-password {
+              position: absolute;
+              right: 20px;
+              background: none;
+              border: none;
+              cursor: pointer;
+              font-size: 18px;
+              color: #777;
+              display: flex;
+              align-items: center;
+  
+              &:hover {
+                color: #333;
+              }
+            }
+          }
+        }
+  
+        .login-button {
+          background-color: #ff6f61;
+          color: white;
+          border: none;
+          padding: 10px;
+          font-size: 1rem;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background 0.3s;
+          width: 100%;
+  
+          &:hover {
+            background-color: #e65b50;
+          }
+        }
+  
+        .disabled {
+          background-color: gray;
+          cursor: not-allowed;
+        }
+      }
+  
+      .register-link {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: #555;
+  
+        a {
+          color: #ff6f61;
+          text-decoration: none;
+          font-weight: bold;
+          transition: color 0.3s;
+  
+          &:hover {
+            color: #e65b50;
+          }
+        }
+      }
     }
-}
+  }
+  
