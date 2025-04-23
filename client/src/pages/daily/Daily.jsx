@@ -145,7 +145,7 @@ const Daily = () => {
 
 
         <div className="goal-section">
-          <button onClick={() => setProgressBarOpen(true)}>Choose Your Bar</button>
+          <button onClick={() => setProgressBarOpen(true)}>Choose Your Bar Icon</button>
 
           {progressBarOpen && (
             <div className="modal">

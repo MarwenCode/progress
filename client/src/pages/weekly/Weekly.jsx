@@ -367,64 +367,7 @@ const Weekly = () => {
         </button>
       )}
 
-      {/* {weeklyGoal.length >= 1 && (
-        <div className="goal-table-container">
-          <h3>Weekly Goal Table</h3>
-          <table className="goal-table">
-            <thead>
-              <tr>
-                <th>Day</th>
-                <th>Note</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday",
-              ].map((day) => (
-                <tr key={day}>
-                  <td>{day}</td>
-                  <td>
-                    <div className="note-container">
-                      {editingDay === day ? (
-                        <div className="edit-mode">
-                          <input
-                            type="text"
-                            value={editedNote}
-                            onChange={(e) => setEditedNote(e.target.value)}
-                            placeholder="Add a note"
-                          />
-                          <button
-                            className="save-btn"
-                            onClick={() => handleSaveNote(day)}>
-                            Save
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="view-mode">
-                          <span>{notes[day] || "No note added"}</span>
-                          <button className="edit-btn">
-                            <RiPencilLine />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    {selectedDays.includes(day) ? "Selected" : "Not Selected"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )} */}
+    
     </div>
   );
 };

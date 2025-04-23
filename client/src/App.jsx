@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProfile } from "./redux/userSlice/userSlice";
 import "./App.css";
 import Dashboard from "./components/dashboard/Dashboard";
 import Daily from "./pages/daily/Daily";
@@ -17,8 +17,15 @@ import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 
 function App() {
-  const token = useSelector((state) => state.user.token); // Récupérer le token depuis Redux
-  const isAuthenticated = !!token; // Vérifier si l'utilisateur est connecté
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user.token);
+  const isAuthenticated = !!token;
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUserProfile());
+    }
+  }, [dispatch, token]);
 
   return (
     <Router>

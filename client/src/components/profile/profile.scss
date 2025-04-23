@@ -38,6 +38,33 @@
   }
 }
 
+.password-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #777;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #ff6f61;
+  }
+}
+
+
 .avatar-section {
   margin-bottom: 1rem;
 
@@ -46,7 +73,17 @@
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    // border: 3px solid #ff6f61;
+  }
+
+  .avatar-upload-label {
+    display: inline-block;
+    margin-top: 10px;
+    cursor: pointer;
+    color: #ff6f61;
+
+    .camera-icon {
+      font-size: 1.5rem;
+    }
   }
 }
 
@@ -95,14 +132,9 @@ form {
       transform: translateY(0);
     }
   }
-
- 
-  
 }
 
 .delete-button {
-  // background-color: #ff4d4d;
-  // color: white;
   border: none;
   padding: 10px;
   font-size: 1rem;

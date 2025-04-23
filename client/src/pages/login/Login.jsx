@@ -1,8 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/userSlice/UserSlice";
 import { useNavigate, Link } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import des icônes
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./login.scss";
 
 const Login = () => {
@@ -11,7 +11,7 @@ const Login = () => {
     password: "",
   });
 
-  const [showPassword, setShowPassword] = useState(false); // État pour afficher/masquer le mot de passe
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,56 +32,53 @@ const Login = () => {
   };
 
   return (
-<div className="login-container">
-  <div className="login-box">
-    <h2>Login</h2>
-    {error && <p className="error-message">{error}</p>}
-    <form onSubmit={handleSubmit}>
-      <div className="email-container">
-        <label>Email</label>
-        <input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div className="password-container">
-        <label>Password</label>
-        <div className="password-field">
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+    <div className="login-container">
+      <div className="login-box">
+        <h2>Login</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <div className="email-container">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="password-container">
+            <label>Password</label>
+            <div className="password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+          </div>
           <button
-            type="button"
-            className="toggle-password"
-            onClick={() => setShowPassword(!showPassword)}
+            type="submit"
+            className={isLoading ? "disabled" : "login-button"}
+            disabled={isLoading}
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
+            {isLoading ? "Loading..." : "Login"}
           </button>
-        </div>
+        </form>
+        <p className="register-link">
+          Don't have an account? <Link to="/register">Sign up here</Link>
+        </p>
       </div>
-      <button
-        type="submit"
-        className={isLoading ? "disabled" : "login-button"}
-        disabled={isLoading}
-      >
-        {isLoading ? "Loading..." : "Login"}
-      </button>
-    </form>
-    <p className="register-link">
-      Don't have an account? <Link to="/register">Sign up here</Link>
-    </p>
-  </div>
-</div>
-
-
-  
+    </div>
   );
 };
 
