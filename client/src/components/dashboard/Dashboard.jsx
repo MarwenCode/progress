@@ -13,7 +13,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1>Welcome to BarBoom!</h1>
+        <h1>Welcome to STEPS!</h1>
         <p>Track your goals and stay on top of your progress.</p>
       </div>
 

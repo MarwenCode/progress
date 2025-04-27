@@ -293,6 +293,38 @@
     }
   }
 
+
+  /* daily.scss */
+
+/* Styles de base pour l'icône et le fond */
+.icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.icon {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+}
+
+.icon-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff; /* Couleur de fond par défaut */
+  z-index: 1;
+  border-radius: 50%; /* Pour que ce soit circulaire */
+  transition: width 0.3s ease-out; /* Transition pour l'animation */
+}
+
+.icon-wrapper[data-progress="100"] .icon-background {
+  background-color: orange; /* Lorsque progress est à 100%, fond orange */
+}
+
+
   @keyframes fadeIn {
     from {
       opacity: 0;

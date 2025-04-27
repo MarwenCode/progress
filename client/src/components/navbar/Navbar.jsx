@@ -35,7 +35,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="logo" onClick={() => navigate("/")}>
-        <img src="assets/BarBoomPic6.png" alt="BarBoom Logo" className="logo-image" />
+        <img src="assets/steps.png" alt="Steps Logo" className="logo-image" />
       </div>
 
       {isAuthenticated && (
