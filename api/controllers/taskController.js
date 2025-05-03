@@ -63,7 +63,7 @@ export const updateTask = async (req, res) => {
 
 // Delete an existing task
 export const deleteTask = async (req, res) => {
-  const { id } = req.params;
+  const  id  = req.params.id;
 
   try {
     const task = await Task.findByIdAndDelete(id);

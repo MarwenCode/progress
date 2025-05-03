@@ -114,18 +114,20 @@ const taskSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(updateTask.pending, (state) => {
-        state.loading = true;
-      })
+      // .addCase(updateTask.pending, (state) => {
+      //   state.loading = true;
+      // })
       .addCase(updateTask.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.tasks.findIndex(
           (task) => task._id === action.payload._id
         );
         if (index !== -1) {
-          state.tasks[index] = action.payload;
+          state.tasks[index] = action.payload; // ✅ pas de refetch complet
         }
       })
+      
+      
       .addCase(updateTask.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;

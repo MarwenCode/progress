@@ -126,10 +126,6 @@ const weeklySlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Get Weekly Goal
-      .addCase(getWeeklyGoal.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(getWeeklyGoal.fulfilled, (state, action) => {
         state.loading = false;
         state.weeklyGoal = action.payload;

@@ -36,27 +36,26 @@ const DaysSelector = ({ selectedDays, onToggleDay }) => (
   <div className="day-selector-container">
     <label>Days Selected:</label>
     <div className="day-selector">
-      {[
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ].map((day) => (
-        <label key={day}>
-          <input
-            type="checkbox"
-            checked={selectedDays.includes(day)}
-            onChange={() => onToggleDay(day)}
-          />
-          {day}
-        </label>
-      ))}
+    {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => {
+  const isChecked = selectedDays.includes(day);
+  return (
+    <label key={day}>
+      <input
+        type="checkbox"
+        checked={isChecked}
+        onChange={() => onToggleDay(day)}
+      />
+      <span className={`custom-checkbox ${isChecked ? 'checked' : ''}`} />
+      {day}
+    </label>
+  );
+})}
+
+
     </div>
   </div>
 );
+
 
 // Weekly Component
 const Weekly = () => {
@@ -109,13 +108,17 @@ const Weekly = () => {
   const handleUpdateSelectedDays = async (goalId, newSelectedDays) => {
     try {
       await dispatch(
-        updateWeeklyGoal({ id: goalId, selectedDays: newSelectedDays })
+        updateWeeklyGoal({
+          id: goalId,
+          updates: { selectedDays: newSelectedDays },
+        })
       ).unwrap();
       dispatch(getWeeklyGoal());
     } catch (err) {
       console.error("Failed to update selected days:", err);
     }
   };
+  
 
   const handleDayToggle = (day) => {
     const updatedDays = selectedDays.includes(day)
@@ -167,10 +170,10 @@ const Weekly = () => {
       console.log("Aucun objectif trouvé pour modification.");
       return;
     }
-  
+
     const goalId = weeklyGoal[weeklyGoal.length - 1]._id;
     console.log("ID envoyé pour mise à jour:", goalId);
-  
+
     const goalData = {
       name: goalName,
       selectedDays,
@@ -178,18 +181,18 @@ const Weekly = () => {
       notes,
       progress: (selectedDays.length / 7) * 100,
     };
-  
+
     try {
       console.log("État avant mise à jour:", weeklyGoal);
-  
+
       const response = await dispatch(
         updateWeeklyGoal({ id: goalId, updates: goalData }) // Correction ici
       ).unwrap();
-  
+
       console.log("Réponse après mise à jour:", response);
-  
+
       dispatch(getWeeklyGoal()); // Recharge les données après mise à jour
-  
+
       // Réinitialisation des champs
       setShowModal(false);
       setGoalName("");
@@ -206,8 +209,8 @@ const Weekly = () => {
   useEffect(() => {
     console.log("État Redux après mise à jour:", weeklyGoal);
   }, [weeklyGoal]);
-  
-  
+
+
 
   useEffect(() => {
     console.log("Weekly goals updated:", weeklyGoal); // Debugging log
@@ -258,8 +261,8 @@ const Weekly = () => {
     }
   };
 
- 
-  
+
+
   useEffect(() => {
     if (showModal && weeklyGoal.length > 0) {
       const latestGoal = weeklyGoal[weeklyGoal.length - 1];
@@ -267,7 +270,7 @@ const Weekly = () => {
       setGoalDetails(latestGoal.details || "");
     }
   }, [showModal, weeklyGoal]);
-  
+
 
 
 
@@ -276,98 +279,107 @@ const Weekly = () => {
 
   return (
     <div className="weekly-container">
-      <h2>Weekly Goal Tracker</h2>
+      <div className="box">
 
-      {weeklyGoal.length > 0 && (
-        <div className="current-goal-info">
-          <div className="goal-header">
-            <h3>{weeklyGoal[weeklyGoal.length - 1].name}</h3>
-            <RiDeleteBinLine
-              className="delete-icon"
-              onClick={handleDeliteGoal}
-            />
-          </div>
-          <p className="goal-details">
-            {weeklyGoal[weeklyGoal.length - 1].details}
-          </p>
-          <p className="goal-date">
-            Created:
-            {new Date(
-              weeklyGoal[weeklyGoal.length - 1].createdAt
-            ).toLocaleDateString()}
-          </p>
-          <div className="update-goal">
-            <button
-              className="update-button"
-              onClick={() => setShowModal(true)}>
-              Update Goal
-            </button>
-          </div>
+      <h2>Weekly Goal</h2>
+
+{weeklyGoal.length > 0 && (
+  <div className="current-goal-info">
+    <div className="goal-header">
+      <h3>{weeklyGoal[weeklyGoal.length - 1].name}</h3>
+      <RiDeleteBinLine
+        className="delete-icon"
+        onClick={handleDeliteGoal}
+      />
+    </div>
+    <p className="goal-details">
+      {weeklyGoal[weeklyGoal.length - 1].details}
+    </p>
+    <p className="goal-date">
+      Created:
+      {new Date(
+        weeklyGoal[weeklyGoal.length - 1].createdAt
+      ).toLocaleDateString()}
+    </p>
+    <div className="update-goal">
+      <button
+        className="update-button"
+        onClick={() => setShowModal(true)}>
+        Update Goal
+      </button>
+    </div>
+  </div>
+)}
+
+<ProgressBar progress={progress} />
+
+{weeklyGoal.length > 0 ? (
+  <DaysSelector
+    selectedDays={selectedDays}
+    onToggleDay={handleDayToggle}
+  />
+) : (
+  <p className="no-goal-message">
+    Please add a weekly goal to start selecting days.
+  </p>
+)}
+
+{showModal && (
+  <div className="modal">
+    <div className="modal-content">
+      <h3>Set Your Weekly Goal</h3>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className="form-group">
+          <label htmlFor="goalName">Goal Name:</label>
+          <input
+            type="text"
+            id="goalName"
+            value={goalName}
+            onChange={(e) => setGoalName(e.target.value)}
+            placeholder="e.g., Exercise 3 times this week"
+          />
         </div>
-      )}
-
-      <ProgressBar progress={progress} />
-
-      {weeklyGoal.length > 0 ? (
-        <DaysSelector
-          selectedDays={selectedDays}
-          onToggleDay={handleDayToggle}
-        />
-      ) : (
-        <p className="no-goal-message">
-          Please add a weekly goal to start selecting days.
-        </p>
-      )}
-
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Set Your Weekly Goal</h3>
-            <form onSubmit={(e) => e.preventDefault()}>
-              <div className="form-group">
-                <label htmlFor="goalName">Goal Name:</label>
-                <input
-                  type="text"
-                  id="goalName"
-                  value={goalName}
-                  onChange={(e) => setGoalName(e.target.value)}
-                  placeholder="e.g., Exercise 3 times this week"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="goalDetails">Goal Details:</label>
-                <textarea
-                  id="goalDetails"
-                  value={goalDetails}
-                  onChange={(e) => setGoalDetails(e.target.value)}
-                  placeholder="Details about your goal"
-                />
-              </div>
-              <button
-  type="button"
-  className="submit-btn"
-  onClick={weeklyGoal.length === 0 ? handleCreateGoal : handleEditGoal}>
-  {weeklyGoal.length === 0 ? "Enregistrer l'objectif" : "Modifier l'objectif"}
-</button>
-
-              <button
-                type="button"
-                className="cancel-btn"
-                onClick={() => setShowModal(false)}>
-                Cancel
-              </button>
-            </form>
-          </div>
+        <div className="form-group">
+          <label htmlFor="goalDetails">Goal Details:</label>
+          <textarea
+            id="goalDetails"
+            value={goalDetails}
+            onChange={(e) => setGoalDetails(e.target.value)}
+            placeholder="Details about your goal"
+          />
         </div>
-      )}
+        <div className="button-group">
+          <button
+            type="button"
+            className="submit-btn"
+            onClick={weeklyGoal.length === 0 ? handleCreateGoal : handleEditGoal}>
+            {weeklyGoal.length === 0 ? "Save Goal" : "Edit Goal"}
+          </button>
 
-      {!showModal && weeklyGoal.length === 0 && (
-        <button className="add-goal-btn" onClick={() => setShowModal(true)}>
-          Add Weekly Goal
-        </button>
-      )}
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={() => setShowModal(false)}>
+            Cancel
+          </button>
+        </div>
 
-    
+      </form>
+    </div>
+  </div>
+)}
+
+{!showModal && weeklyGoal.length === 0 && (
+  <button className="add-goal-btn" onClick={() => setShowModal(true)}>
+    Add Weekly Goal
+  </button>
+)}
+
+
+
+      </div>
+      
+
     </div>
   );
 };

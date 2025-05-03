@@ -112,8 +112,12 @@ const Monthly = () => {
       <div className="goals-list">
         {goals.map((goal) => (
           <div key={goal._id} className="goal-card">
+            <div className="goal_header">
             <h3>{goal.goalName}</h3>
             <p>{goal.goalDetails}</p>
+
+            </div>
+          
             <div className="goal-footer">
               <h4>{goal.month}</h4>
               <div className="deleteButton">
