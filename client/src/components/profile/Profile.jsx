@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { updateUserProfile, deleteUserProfile } from "../../redux/userSlice/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faHeartBroken } from "@fortawesome/free-solid-svg-icons";
+
 import "./profile.scss";
 
 const Profile = ({ isOpen, onClose }) => {
@@ -122,7 +124,15 @@ const Profile = ({ isOpen, onClose }) => {
         </form>
 
         {/* Delete Button */}
-        <button className="delete-button" onClick={handleDelete}>Delete Account</button>
+        {/* Delete Button */}
+<button
+  className="delete-button"
+  onClick={handleDelete}
+  title="Delete Account"
+>
+  <FontAwesomeIcon icon={faHeartBroken} />
+</button>
+
       </div>
     </div>
   );

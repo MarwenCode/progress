@@ -1,4 +1,4 @@
-// TaskItems.js
+
 import React from 'react';
 import "./taskitems.scss"
 import { RiDeleteBinLine } from 'react-icons/ri';

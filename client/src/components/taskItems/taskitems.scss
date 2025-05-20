@@ -5,44 +5,55 @@
   padding: 10px;
   border: 1px solid #ccc;
   margin: 5px 0;
-  transition: all 0.2s ease; /* Une transition pour les changements de couleur */
-}
+  transition: all 0.2s ease;
 
-.custom-checkbox {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ccc;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-right: 10px;
-  background-color: transparent;
-  position: relative;
+  .custom-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 10px;
+    background-color: transparent;
+    position: relative;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 
-  /* Assurer que la checkbox reste en place sans effet de déplacement */
-  transition: background-color 0.2s ease, border-color 0.2s ease; /* Transition sur la couleur seulement */
+    &.checked {
+      background: #ff6f61;
 
-  &.checked {
-    background: #ff6f61;
-    background: #ff6f61;
+      &::after {
+        content: '✔';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 12px;
+      }
+    }
   }
 
-  &.checked::after {
-    content: '✔'; /* Affiche une coche dans la case */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: 12px;
+  .task-title {
+    flex-grow: 1;
+    margin-left: 10px;
   }
-}
 
-.task-title {
-  flex-grow: 1; /* Permet au titre de prendre de l'espace */
-  margin-left: 10px;
-}
+  .deleteButton {
+    margin-left: 10px;
+    cursor: pointer;
 
-.deleteButton {
-  margin-left: 10px;
-  cursor: pointer;
+    .delete-btn {
+      font-size: 1.5rem;
+      color: #ff4d4f;
+      padding: 5px;
+      border-radius: 5px;
+      transition: transform 0.2s ease, background 0.2s;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
 }

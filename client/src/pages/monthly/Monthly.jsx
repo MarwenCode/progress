@@ -82,30 +82,44 @@ const Monthly = () => {
 
       {isModalOpen && (
         <div className="modal">
-          <div className="modal-content">
-            <h3>Add Monthly Goal</h3>
-            <input
-              type="text"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            <textarea
-              placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <select value={month} onChange={(e) => setMonth(e.target.value)}>
-              <option value="">Select a month</option>
-              {["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"].map((m) => (
-                <option key={m} value={m}>{m}</option>
-              ))}
-            </select>
-            <div className="modal-buttons">
-              <button onClick={handleAddGoal}>Save Goal</button>
-              <button onClick={() => setIsModalOpen(false)}>Cancel</button>
-            </div>
-          </div>
+<div className="modal-content">
+  <h3>Add Monthly Goal</h3>
+
+  <div className="form-group">
+    <input
+      type="text"
+      placeholder="Title"
+      value={title}
+      onChange={(e) => setTitle(e.target.value)}
+    />
+  </div>
+
+  <div className="form-group">
+    <textarea
+      placeholder="Description"
+      value={description}
+      onChange={(e) => setDescription(e.target.value)}
+    />
+  </div>
+
+  <div className="form-group">
+    <select value={month} onChange={(e) => setMonth(e.target.value)}>
+      <option value="">Select a month</option>
+      {[
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ].map((m) => (
+        <option key={m} value={m}>{m}</option>
+      ))}
+    </select>
+  </div>
+
+  <div className="button-group">
+    <button className="save-btn" onClick={handleAddGoal}>Save Goal</button>
+    <button className="cancel-btn" onClick={() => setIsModalOpen(false)}>Cancel</button>
+  </div>
+</div>
+
         </div>
       )}
 
