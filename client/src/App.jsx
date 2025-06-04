@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,8 +16,13 @@ import Navbar from "./components/navbar/Navbar";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 
+import FloatingButton from "./components/floatingButton/FloatingButton";
+import SideBar from "./components/sidebar/SideBar";
+
 function App() {
   const dispatch = useDispatch();
+  const [isOpen, setIsOpen] = useState(false);
+
   const token = useSelector((state) => state.user.token);
   const isAuthenticated = !!token;
 
@@ -31,6 +36,9 @@ function App() {
     <Router>
       <div className="container">
         <Navbar />
+        <FloatingButton onClick={() => setIsOpen(!isOpen)} />
+        {isOpen && <SideBar onClose={() => setIsOpen(false)} />}
+
         <Routes>
           {isAuthenticated ? (
             <>

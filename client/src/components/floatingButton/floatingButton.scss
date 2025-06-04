@@ -1,0 +1,23 @@
+.floating-button {
+    position: fixed;
+    top: 150px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    z-index: 9999;
+    transition: transform 0.2s;
+  
+    &:active {
+      cursor: grabbing;
+      transform: scale(0.95);
+    }
+  }
+  
