@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./sidebar.scss";
 
-const SideBar = ({ onClose }) => {
+const SideBar = ({ onClose, position }) => {
   const [notes, setNotes] = useState([]);
   const [input, setInput] = useState("");
 
@@ -18,8 +18,16 @@ const SideBar = ({ onClose }) => {
     setNotes(updated);
   };
 
+  // Positionnement dynamique
+  const sidebarStyle = {
+    position: "fixed",
+    top: position.y,
+    left: position.x + 60, // un petit décalage à droite de l'icône
+    zIndex: 10000,
+  };
+
   return (
-    <div className="mobile-sidebar">
+    <div className="mobile-sidebar" style={sidebarStyle}>
       <button className="close-btn" onClick={onClose}>✖</button>
       <textarea
         value={input}
@@ -41,3 +49,4 @@ const SideBar = ({ onClose }) => {
 };
 
 export default SideBar;
+

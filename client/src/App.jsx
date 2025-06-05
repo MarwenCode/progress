@@ -19,9 +19,12 @@ import Login from "./pages/login/Login";
 import FloatingButton from "./components/floatingButton/FloatingButton";
 import SideBar from "./components/sidebar/SideBar";
 
+
+
 function App() {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [buttonPosition, setButtonPosition] = useState({ x: 100, y: 100 });
 
   const token = useSelector((state) => state.user.token);
   const isAuthenticated = !!token;
@@ -32,12 +35,16 @@ function App() {
     }
   }, [dispatch, token]);
 
+  const handleDragStop = (e, data) => {
+    setButtonPosition({ x: data.x, y: data.y });
+  };
+
   return (
     <Router>
       <div className="container">
         <Navbar />
-        <FloatingButton onClick={() => setIsOpen(!isOpen)} />
-        {isOpen && <SideBar onClose={() => setIsOpen(false)} />}
+        <FloatingButton onClick={() => setIsOpen(!isOpen)} onDragStop={handleDragStop} />
+        {isOpen && <SideBar onClose={() => setIsOpen(false)} position={buttonPosition} />}
 
         <Routes>
           {isAuthenticated ? (
@@ -62,3 +69,4 @@ function App() {
 }
 
 export default App;
+

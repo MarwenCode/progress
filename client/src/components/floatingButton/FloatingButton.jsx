@@ -2,9 +2,9 @@ import React from "react";
 import Draggable from "react-draggable";
 import "./floatingButton.scss";
 
-const FloatingButton = ({ onClick }) => {
+const FloatingButton = ({ onClick, onDragStop }) => {
   return (
-    <Draggable>
+    <Draggable onStop={onDragStop}>
       <div className="floating-button" onClick={onClick}>
         📝
       </div>
@@ -13,3 +13,4 @@ const FloatingButton = ({ onClick }) => {
 };
 
 export default FloatingButton;
+
