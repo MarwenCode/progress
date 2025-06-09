@@ -1,46 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFloatingNotes, addFloatingNote, deleteFloatingNote } from "../../redux/floatingNoteSlice/floatingNoteSlice";
 import "./sidebar.scss";
 
+
 const SideBar = ({ onClose, position }) => {
-  const [notes, setNotes] = useState([]);
+  const dispatch = useDispatch();
+  const { notes, loading } = useSelector((state) => state.floatingNotes);
   const [input, setInput] = useState("");
 
-  const addNote = () => {
+  useEffect(() => {
+    dispatch(fetchFloatingNotes());
+  }, [dispatch]);
+
+  const handleAddNote = () => {
     if (input.trim()) {
-      setNotes([...notes, input]);
+      dispatch(addFloatingNote({ title: input }));
       setInput("");
     }
   };
 
-  const deleteNote = (index) => {
-    const updated = [...notes];
-    updated.splice(index, 1);
-    setNotes(updated);
+  const handleDeleteNote = (id) => {
+    dispatch(deleteFloatingNote(id));
   };
 
-  // Positionnement dynamique
   const sidebarStyle = {
     position: "fixed",
     top: position.y,
-    left: position.x + 60, // un petit décalage à droite de l'icône
+    left: position.x + 60,
     zIndex: 10000,
   };
 
   return (
     <div className="mobile-sidebar" style={sidebarStyle}>
       <button className="close-btn" onClick={onClose}>✖</button>
+
       <textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Quick note..."
       />
-      <button onClick={addNote}>Add</button>
+      <button onClick={handleAddNote}>Add</button>
 
       <div className="notes-list">
-        {notes.map((note, index) => (
-          <div key={index} className="note">
-            <p>{note}</p>
-            <span onClick={() => deleteNote(index)}>✖</span>
+        {loading && <p style={{ color: "#aaa" }}>Loading...</p>}
+        {notes.map((note) => (
+          <div key={note._id} className="note">
+            <p>{note.title}</p>
+            <span onClick={() => handleDeleteNote(note._id)}>✖</span>
           </div>
         ))}
       </div>
@@ -49,4 +56,6 @@ const SideBar = ({ onClose, position }) => {
 };
 
 export default SideBar;
+
+
 

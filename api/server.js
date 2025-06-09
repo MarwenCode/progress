@@ -39,7 +39,7 @@ app.use('/api/tasks', taskRoutes);
 
 // Route racine
 app.get('/', (req, res) => {
-  res.send('BarBoom API is running!');
+  res.send('STEPS API is running!');
 });
 
 // Démarrer le serveur

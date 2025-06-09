@@ -1,55 +1,101 @@
 .mobile-sidebar {
-    position: fixed;
-    right: 20px;
-    top: 100px;
-    width: 280px;
-    background: #fff;
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-    z-index: 10000;
-    animation: slideIn 0.3s ease-out;
-  
-    .close-btn {
-      background: transparent;
-      border: none;
-      font-size: 20px;
-      float: right;
+  position: fixed;
+  width: 280px;
+  max-height: 75vh;
+  background: #1e1e1e; // fond foncé pour le dark mode
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  animation: slideIn 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #fff;
+
+  .close-btn {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #ff6b6b;
+    }
+  }
+
+  textarea {
+    width: 90%;
+    height: 80px;
+    resize: none;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background-color: #2a2a2a;
+    color: #f1f1f1;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: #ff8a65;
+    }
+  }
+
+  button {
+    background: linear-gradient(90deg, #ff6b6b, #ffb347);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  .notes-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+    padding-right: 4px;
+  }
+
+  .note {
+    background: #2e2e2e;
+    border: 1px solid #444;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 14px;
+    color: #eee;
+
+    span {
+      color: #ff6b6b;
+      font-weight: bold;
       cursor: pointer;
     }
-  
-    textarea {
-      width: 100%;
-      height: 70px;
-      resize: none;
-      margin-top: 10px;
-      padding: 8px;
-      font-size: 14px;
-    }
-  
-    button {
-      margin-top: 8px;
-      width: 100%;
-      padding: 6px;
-    }
-  
-    .note {
-      background: #f4f4f4;
-      padding: 6px;
-      margin-top: 6px;
-      display: flex;
-      justify-content: space-between;
-    }
   }
-  
-  @keyframes slideIn {
-    from {
-      transform: translateX(50%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(30%);
+    opacity: 0;
   }
-  
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+

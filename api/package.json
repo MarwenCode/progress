@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "BarBoom project",
+  "description": "STEPS project",
   "main": "server.js",
   "type": "module",
   "scripts": {

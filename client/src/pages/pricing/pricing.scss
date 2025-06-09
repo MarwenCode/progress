@@ -1,0 +1,54 @@
+.pricing {
+    padding: 4rem 2rem;
+    text-align: center;
+  
+    .plans {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+  
+      .plan {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 1rem;
+        padding: 2rem;
+        width: 280px;
+  
+        h4 {
+          color: #007bff;
+          margin-bottom: 1rem;
+        }
+  
+        .price {
+          font-size: 2rem;
+          font-weight: bold;
+          margin-bottom: 1rem;
+        }
+  
+        ul {
+          list-style: none;
+          padding: 0;
+  
+          li {
+            margin-bottom: 0.5rem;
+            color: #555;
+          }
+        }
+  
+        .btn {
+          margin-top: 1.5rem;
+          background-color: #007bff;
+          color: white;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+  
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+      }
+    }
+  }
+  

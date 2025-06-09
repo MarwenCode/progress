@@ -38,6 +38,12 @@ const Navbar = () => {
         <img src="assets/steps.png" alt="Steps Logo" className="logo-image" />
       </div>
 
+      <div className="nav-pages">
+  <span onClick={() => navigate("/")}>Home</span>
+  <span onClick={() => navigate("/features")}>Features</span>
+  <span onClick={() => navigate("/pricing")}>Pricing</span>
+</div>
+
       {isAuthenticated && (
   <div className="icons-cards">
     <div className="card daily" onClick={() => navigate("/daily")}>

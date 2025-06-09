@@ -8,6 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getUserProfile } from "./redux/userSlice/userSlice";
 import "./App.css";
+
 import Dashboard from "./components/dashboard/Dashboard";
 import Daily from "./pages/daily/Daily";
 import Weekly from "./pages/weekly/Weekly";
@@ -15,11 +16,12 @@ import Monthly from "./pages/monthly/Monthly";
 import Navbar from "./components/navbar/Navbar";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
-
 import FloatingButton from "./components/floatingButton/FloatingButton";
 import SideBar from "./components/sidebar/SideBar";
-
-
+import Home from "./pages/home/Home";
+import Pricing from "./pages/pricing/Pricing";
+import Features from "./pages/features/Features";
+import Footer from "./components/footer/Footer";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,26 +45,36 @@ function App() {
     <Router>
       <div className="container">
         <Navbar />
-        <FloatingButton onClick={() => setIsOpen(!isOpen)} onDragStop={handleDragStop} />
-        {isOpen && <SideBar onClose={() => setIsOpen(false)} position={buttonPosition} />}
+        {isAuthenticated && (
+  <FloatingButton onClick={() => setIsOpen(!isOpen)} onDragStop={handleDragStop} />
+)}
 
-        <Routes>
-          {isAuthenticated ? (
-            <>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/daily" element={<Daily />} />
-              <Route path="/weekly" element={<Weekly />} />
-              <Route path="/monthly" element={<Monthly />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </>
-          ) : (
-            <>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="*" element={<Navigate to="/login" />} />
-            </>
-          )}
-        </Routes>
+        {isOpen && (
+          <SideBar onClose={() => setIsOpen(false)} position={buttonPosition} />
+        )}
+
+<Routes>
+  <Route path="/" element={<Home />} />
+  <Route path="/features" element={<Features />} />
+  <Route path="/pricing" element={<Pricing />} />
+
+  {isAuthenticated ? (
+    <>
+      <Route path="/daily" element={<Daily />} />
+      <Route path="/weekly" element={<Weekly />} />
+      <Route path="/monthly" element={<Monthly />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+    </>
+  ) : (
+    <>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+    </>
+  )}
+
+  <Route path="*" element={<Navigate to="/" />} />
+</Routes>
+
       </div>
     </Router>
   );
