@@ -28,16 +28,17 @@
 
   .add-goal-btn {
     padding: 12px 20px;
-    background: #ff6f61;
+    background-color: #ff6f61;
     color: white;
     border: none;
     border-radius: 10px;
     font-size: 1rem;
     cursor: pointer;
     margin-bottom: 30px;
+    font-weight: bold;
 
     &:hover {
-      background: #ff826b;
+      background-color: #ff6347;
     }
   }
 
@@ -204,6 +205,15 @@
           height: 100%;
           transition: width 0.3s ease;
         }
+
+        .progress-text {
+          text-align: right;
+          margin-top: 4px;
+          font-size: 14px;
+          color: #4caf50;
+          font-weight: 500;
+        }
+        
       }
 
       .task-form {

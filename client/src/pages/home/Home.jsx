@@ -70,9 +70,9 @@ const Home = () => {
         </div>
       </section>
 
-      <footer className="home-footer">
+      {/* <footer className="home-footer">
         <p>&copy; {new Date().getFullYear()} STEPS. All rights reserved.</p>
-      </footer>
+      </footer> */}
     </div>
   );
 };

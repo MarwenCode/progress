@@ -5,7 +5,7 @@ import {
   addMonthlyGoal,
   addTaskToGoal,
   updateTaskCompletion,
-  deleteMonthlyGoal
+  deleteMonthlyGoal,
 } from "../../redux/monthlySlice/monthlySlice";
 import { RiDeleteBinLine } from "react-icons/ri";
 import "./monthly.scss";
@@ -30,7 +30,9 @@ const Monthly = () => {
       return;
     }
 
-    dispatch(addMonthlyGoal({ month, goalName: title, goalDetails: description }));
+    dispatch(
+      addMonthlyGoal({ month, goalName: title, goalDetails: description })
+    );
     setMonth("");
     setTitle("");
     setDescription("");
@@ -45,11 +47,13 @@ const Monthly = () => {
     const taskText = taskInputs[goalId]?.trim();
     if (!taskText) return;
 
-    dispatch(addTaskToGoal({
-      goalId,
-      task: { text: taskText, completed: false },
-      url: `/monthly/${goalId}/tasks`,
-    }));
+    dispatch(
+      addTaskToGoal({
+        goalId,
+        task: { text: taskText, completed: false },
+        url: `/monthly/${goalId}/tasks`,
+      })
+    );
 
     setTaskInputs((prev) => ({ ...prev, [goalId]: "" }));
   };
@@ -75,51 +79,84 @@ const Monthly = () => {
   if (status === "loading") return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
+  if (!goals || goals.length === 0) {
+    // If there are no goals, show a message and a button to add a goal
+    return (
+      <div className="no-goals-container">
+        <h2>No Monthly Goals Yet</h2>
+        <button className="add-goal-btn" onClick={() => setIsModalOpen(true)}>
+          Add a Monthly Goal
+        </button>
+      </div>
+    );
+  }
+
+  //create a function to show the percentage of tasks completed in the progress bar
+
   return (
     <div className="monthly-container">
       <h2>Monthly Goals</h2>
-      <button className="add-goal-btn" onClick={() => setIsModalOpen(true)}>Add a Monthly Goal</button>
+      <button className="add-goal-btn" onClick={() => setIsModalOpen(true)}>
+        Add a Monthly Goal
+      </button>
 
       {isModalOpen && (
         <div className="modal">
-<div className="modal-content">
-  <h3>Add Monthly Goal</h3>
+          <div className="modal-content">
+            <h3>Add Monthly Goal</h3>
 
-  <div className="form-group">
-    <input
-      type="text"
-      placeholder="Title"
-      value={title}
-      onChange={(e) => setTitle(e.target.value)}
-    />
-  </div>
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
 
-  <div className="form-group">
-    <textarea
-      placeholder="Description"
-      value={description}
-      onChange={(e) => setDescription(e.target.value)}
-    />
-  </div>
+            <div className="form-group">
+              <textarea
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
 
-  <div className="form-group">
-    <select value={month} onChange={(e) => setMonth(e.target.value)}>
-      <option value="">Select a month</option>
-      {[
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-      ].map((m) => (
-        <option key={m} value={m}>{m}</option>
-      ))}
-    </select>
-  </div>
+            <div className="form-group">
+              <select value={month} onChange={(e) => setMonth(e.target.value)}>
+                <option value="">Select a month</option>
+                {[
+                  "January",
+                  "February",
+                  "March",
+                  "April",
+                  "May",
+                  "June",
+                  "July",
+                  "August",
+                  "September",
+                  "October",
+                  "November",
+                  "December",
+                ].map((m) => (
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-  <div className="button-group">
-    <button className="save-btn" onClick={handleAddGoal}>Save Goal</button>
-    <button className="cancel-btn" onClick={() => setIsModalOpen(false)}>Cancel</button>
-  </div>
-</div>
-
+            <div className="button-group">
+              <button className="save-btn" onClick={handleAddGoal}>
+                Save Goal
+              </button>
+              <button
+                className="cancel-btn"
+                onClick={() => setIsModalOpen(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -127,11 +164,10 @@ const Monthly = () => {
         {goals.map((goal) => (
           <div key={goal._id} className="goal-card">
             <div className="goal_header">
-            <h3>{goal.goalName}</h3>
-            <p>{goal.goalDetails}</p>
-
+              <h3>{goal.goalName}</h3>
+              <p>{goal.goalDetails}</p>
             </div>
-          
+
             <div className="goal-footer">
               <h4>{goal.month}</h4>
               <div className="deleteButton">
@@ -140,30 +176,39 @@ const Monthly = () => {
             </div>
 
             <div className="progress-bar">
-              <div
-                className="progress"
-                style={{ width: `${calculateProgress(goal.tasks)}%` }}
-              ></div>
-            </div>
+  <div
+    className="progress"
+    style={{ width: `${calculateProgress(goal.tasks)}%` }}></div>
+</div>
+<p className="progress-text">
+  {Math.round(calculateProgress(goal.tasks))}% completed
+</p>
+
 
             <div className="task-form">
               <input
                 type="text"
                 placeholder="Add a task"
                 value={taskInputs[goal._id] || ""}
-                onChange={(e) => handleTaskInputChange(goal._id, e.target.value)}
+                onChange={(e) =>
+                  handleTaskInputChange(goal._id, e.target.value)
+                }
               />
               <button onClick={() => handleAddTask(goal._id)}>Add Task</button>
             </div>
 
             <ul>
               {(goal.tasks || []).map((task) => (
-                <li key={task._id} className={task.completed ? "completed" : ""}>
+                <li
+                  key={task._id}
+                  className={task.completed ? "completed" : ""}>
                   <input
                     type="checkbox"
                     id={`task-${task._id}`}
                     checked={task.completed}
-                    onChange={() => handleToggleTask(goal._id, task._id, task.completed)}
+                    onChange={() =>
+                      handleToggleTask(goal._id, task._id, task.completed)
+                    }
                   />
                   <label htmlFor={`task-${task._id}`}>
                     <span>{task.text}</span>

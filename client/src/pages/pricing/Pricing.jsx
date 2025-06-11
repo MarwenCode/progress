@@ -18,7 +18,7 @@ const Pricing = () => {
           <p>5€ / month</p>
         </div>
       </div>
-      <Footer />
+    
     </div>
   );
 };

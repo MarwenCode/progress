@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUserProfile, deleteUserProfile } from "../../redux/userSlice/userSlice";
+import {
+  updateUserProfile,
+  deleteUserProfile,
+} from "../../redux/userSlice/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { faHeartBroken } from "@fortawesome/free-solid-svg-icons";
@@ -17,7 +20,9 @@ const Profile = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState(null);
-  const [previewAvatar, setPreviewAvatar] = useState("assets/default-avatar.png");
+  const [previewAvatar, setPreviewAvatar] = useState(
+    "assets/default-avatar.png"
+  );
   const [showPassword, setShowPassword] = useState(false);
 
   // Update form fields with user data
@@ -25,7 +30,11 @@ const Profile = ({ isOpen, onClose }) => {
     if (user) {
       setUsername(user.username);
       setEmail(user.email);
-      setPreviewAvatar(user.avatar ? `http://localhost:5000${user.avatar}` : "assets/default-avatar.png");
+      setPreviewAvatar(
+        user.avatar
+          ? `http://localhost:5000${user.avatar}`
+          : "assets/default-avatar.png"
+      );
       setPassword(user.password); // Set the current password
     }
   }, [user]);
@@ -46,8 +55,14 @@ const Profile = ({ isOpen, onClose }) => {
         console.log("✅ Profile updated successfully:", resultAction.payload);
         // Update avatar after success
         if (resultAction.payload.avatar) {
-          setPreviewAvatar(`http://localhost:5000${resultAction.payload.avatar}`);
+          setPreviewAvatar(
+            `http://localhost:5000${resultAction.payload.avatar}`
+          );
         }
+
+        onClose(); // Close the modal after successful update
+
+
       } else {
         console.error("❌ Error updating profile:", resultAction.payload);
       }
@@ -57,7 +72,11 @@ const Profile = ({ isOpen, onClose }) => {
   };
 
   const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+    if (
+      window.confirm(
+        "Are you sure you want to delete your account? This action cannot be undone."
+      )
+    ) {
       dispatch(deleteUserProfile());
     }
   };
@@ -72,7 +91,9 @@ const Profile = ({ isOpen, onClose }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <h2>My Profile</h2>
-        <button className="close-button" onClick={onClose}>X</button>
+        <button className="close-button" onClick={onClose}>
+          X
+        </button>
 
         {/* Avatar Section */}
         <div className="avatar-section">
@@ -98,10 +119,20 @@ const Profile = ({ isOpen, onClose }) => {
         {/* Profile Form */}
         <form onSubmit={handleUpdate}>
           <label>Username:</label>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
 
           <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
           <label>Current Password:</label>
           <div className="password-input">
@@ -118,21 +149,19 @@ const Profile = ({ isOpen, onClose }) => {
             />
           </div>
 
-          <button type="submit" disabled={isLoading}>
+          <button type="submit" disabled={isLoading}    >
             {isLoading ? "Updating..." : "Update Profile"}
           </button>
         </form>
 
         {/* Delete Button */}
         {/* Delete Button */}
-<button
-  className="delete-button"
-  onClick={handleDelete}
-  title="Delete Account"
->
-  <FontAwesomeIcon icon={faHeartBroken} />
-</button>
-
+        <button
+          className="delete-button"
+          onClick={handleDelete}
+          title="Delete Account">
+          <FontAwesomeIcon icon={faHeartBroken} />
+        </button>
       </div>
     </div>
   );

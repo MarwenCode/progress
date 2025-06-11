@@ -295,12 +295,12 @@ const Weekly = () => {
     <p className="goal-details">
       {weeklyGoal[weeklyGoal.length - 1].details}
     </p>
-    <p className="goal-date">
+    {/* <p className="goal-date">
       Created:
       {new Date(
         weeklyGoal[weeklyGoal.length - 1].createdAt
       ).toLocaleDateString()}
-    </p>
+    </p> */}
     <div className="update-goal">
       <button
         className="update-button"
