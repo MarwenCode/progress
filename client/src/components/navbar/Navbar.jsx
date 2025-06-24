@@ -1,36 +1,56 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../redux/userSlice/userSlice";
+import { logout } from "../../redux/authSlice/authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouseChimney } from "@fortawesome/free-solid-svg-icons";
+import { faHouseChimney, faUser } from "@fortawesome/free-solid-svg-icons";
 import Profile from "../profile/Profile";
 import "./navbar.scss";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isAuthenticated = localStorage.getItem("token");
-  const user = useSelector((state) => state.user.user);
-  const [userAvatar, setUserAvatar] = useState("assets/default-avatar.png");
+  const user = useSelector((state) => state.user?.user);
+  const isAuthenticated = !!user;
+  const [userAvatar, setUserAvatar] = useState(null);
+  const [showAvatarIcon, setShowAvatarIcon] = useState(true);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [authDropdownOpen, setAuthDropdownOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (user && user.avatar) {
-      setUserAvatar(`http://localhost:5000${user.avatar}?t=${Date.now()}`);
+    if (user && user.avatar && user.avatar !== "" && user.avatar !== "/assets/default-avatar.png" && user.avatar !== "assets/default-avatar.png") {
+      if (user.avatar.startsWith("http")) {
+        setUserAvatar(user.avatar);
+        setShowAvatarIcon(false);
+      } else {
+        setUserAvatar(`http://localhost:5000${user.avatar}?t=${Date.now()}`);
+        setShowAvatarIcon(false);
+      }
+    } else {
+      setUserAvatar(null);
+      setShowAvatarIcon(true);
     }
   }, [user]);
 
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-
   const handleSignOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     dispatch(logout());
     navigate("/login");
   };
 
   const handleLogin = () => {
     navigate("/login");
+    setAuthDropdownOpen(false);
   };
+
+  const handleRegister = () => {
+    navigate("/register");
+    setAuthDropdownOpen(false);
+  };
+
+ 
+
 
   return (
     <nav className="navbar">
@@ -39,26 +59,24 @@ const Navbar = () => {
       </div>
 
       <div className="nav-pages">
-  <span onClick={() => navigate("/")}>Home</span>
-  <span onClick={() => navigate("/features")}>Features</span>
-  <span onClick={() => navigate("/pricing")}>Pricing</span>
-</div>
+        <span onClick={() => navigate("/")}>Home</span>
+        <span onClick={() => navigate("/features")}>Features</span>
+        <span onClick={() => navigate("/pricing")}>Pricing</span>
+      </div>
 
       {isAuthenticated && (
-  <div className="icons-cards">
-    <div className="card daily" onClick={() => navigate("/daily")}>
-      <p>D</p>
-    </div>
-    <div className="card weekly" onClick={() => navigate("/weekly")}>
-      <p>W</p>
-    </div>
-    <div className="card monthly" onClick={() => navigate("/monthly")}>
-      <p>M</p>
-    </div>
-  </div>
-)}
-
-
+        <div className="icons-cards">
+          <div className="card daily" onClick={() => navigate("/daily")}>
+            <p>D</p>
+          </div>
+          <div className="card weekly" onClick={() => navigate("/weekly")}>
+            <p>W</p>
+          </div>
+          <div className="card monthly" onClick={() => navigate("/monthly")}>
+            <p>M</p>
+          </div>
+        </div>
+      )}
 
       {isAuthenticated && (
         <div className="nav-icons">
@@ -66,7 +84,19 @@ const Navbar = () => {
             <FontAwesomeIcon icon={faHouseChimney} />
           </div>
           <div className="nav-item" onClick={() => setIsProfileOpen(true)}>
-            <img src={userAvatar} alt="User Avatar" className="user-avatar" />
+            {showAvatarIcon ? (
+              <FontAwesomeIcon icon={faUser} className="user-avatar fa-user" />
+            ) : (
+              <img
+                src={userAvatar}
+                alt="User Avatar"
+                className="user-avatar"
+                onError={() => {
+                  setShowAvatarIcon(true);
+                }}
+              />
+            )}
+            <span className="user-name">{user?.username}</span>
           </div>
         </div>
       )}
@@ -77,8 +107,18 @@ const Navbar = () => {
             Signout
           </div>
         ) : (
-          <div className="login-button" onClick={handleLogin}>
-            Login
+          <div
+            className="auth-dropdown"
+            onMouseEnter={() => setAuthDropdownOpen(true)}
+            onMouseLeave={() => setAuthDropdownOpen(false)}
+          >
+            <div className="auth-button">Sign In ▾</div>
+            {authDropdownOpen && (
+              <div className="dropdown-menu">
+                <div onClick={handleLogin}>Login</div>
+                <div onClick={handleRegister}>Register</div>
+              </div>
+            )}
           </div>
         )}
       </div>

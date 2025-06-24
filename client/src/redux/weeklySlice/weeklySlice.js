@@ -1,20 +1,31 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-//Fetch weekly Goal
+// Helper function to get auth config
+const getAuthConfig = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  return {
+    headers: {
+      Authorization: user?.token ? `Bearer ${user.token}` : ''
+    }
+  };
+};
 
+//Fetch weekly Goal
 export const getWeeklyGoal = createAsyncThunk(
   "weekly/getWeeklyGoal",
   async (_, { rejectWithValue }) => {
     try {
-      console.log("Fetching weekly goals"); // Add this
+      console.log("Fetching weekly goals");
+      const config = getAuthConfig();
       const response = await axios.get(
-        "http://localhost:5000/api/tasks/weekly"
+        "http://localhost:5000/api/tasks/weekly",
+        config
       );
-      console.log("Response:", response.data); // Add this
+      console.log("Response:", response.data);
       return response.data;
     } catch (error) {
-      console.error("Error fetching goals:", error); // Add this
+      console.error("Error fetching goals:", error);
       return rejectWithValue(
         error.response?.data?.message || "Failed to fetch tasks"
       );
@@ -27,18 +38,20 @@ export const createWeeklyGoal = createAsyncThunk(
   "weekly/createWeeklyGoal",
   async (data, { rejectWithValue }) => {
     try {
-      console.log("Creating weekly goal with data:", data); // Log the data being sent
+      console.log("Creating weekly goal with data:", data);
+      const config = getAuthConfig();
       const response = await axios.post(
         "http://localhost:5000/api/tasks/weekly",
-        data
+        data,
+        config
       );
-      console.log("Response from server:", response.data); // Log the server's response
+      console.log("Response from server:", response.data);
       return response.data;
     } catch (error) {
       console.error(
         "Error in createWeeklyGoal:",
         error.response || error.message
-      ); // Log any errors
+      );
       return rejectWithValue(
         error.response?.data?.message || "Failed to create task"
       );
@@ -62,9 +75,14 @@ export const createWeeklyGoal = createAsyncThunk(
 
 export const updateWeeklyGoal = createAsyncThunk(
   "weekly/updateWeeklyGoal",
-  async ({ id, updates }, { rejectWithValue }) => { // Changement ici: `updates` au lieu de `data`
+  async ({ id, updates }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/tasks/weekly/${id}`, updates);
+      const config = getAuthConfig();
+      const response = await axios.put(
+        `http://localhost:5000/api/tasks/weekly/${id}`, 
+        updates,
+        config
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Erreur de mise à jour.");
@@ -78,13 +96,15 @@ export const updateNotes = createAsyncThunk(
   "weekly/updateNotes",
   async ({ id, notes }, { rejectWithValue }) => {
     try {
-      console.log("Updating notes with ID:", id); // Debugging log
-      console.log("Notes data:", notes); // Debugging log
+      console.log("Updating notes with ID:", id);
+      console.log("Notes data:", notes);
+      const config = getAuthConfig();
       const response = await axios.put(
-        `http://localhost:5000/api/tasks/weekly/notes/${id}`, // Ensure this matches the backend route
-        { notes } // Send notes in the request body
+        `http://localhost:5000/api/tasks/weekly/notes/${id}`,
+        { notes },
+        config
       );
-      console.log("Response from server:", response.data); // Debugging log
+      console.log("Response from server:", response.data);
       return response.data;
     } catch (error) {
       console.error(
@@ -102,7 +122,8 @@ export const deleteWeeklyGoal = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       console.log("Deleting goal with ID:", id);
-      await axios.delete(`http://localhost:5000/api/tasks/weekly/${id}`);
+      const config = getAuthConfig();
+      await axios.delete(`http://localhost:5000/api/tasks/weekly/${id}`, config);
       console.log("Successfully deleted goal with ID:", id);
       return id;
     } catch (error) {
@@ -151,31 +172,19 @@ const weeklySlice = createSlice({
         state.error = action.payload;
       })
       // Update Weekly Goal
-
-      // Update Weekly Goal
-      // Update Weekly Goal
-    // Update Weekly Goal
-// Reducer dans le slice Redux
-.addCase(updateWeeklyGoal.fulfilled, (state, action) => {
-  const { _id, ...updates } = action.payload;
-  state.weeklyGoal = state.weeklyGoal.map(goal =>
-    goal._id === _id ? { ...goal, ...updates } : goal
-  );
-
-  console.log("État Redux mis à jour :", state.weeklyGoal); // Debugging
-})
-
-
-
-
-// Delete Weekly Goal
-.addCase(deleteWeeklyGoal.fulfilled, (state, action) => {
-  state.loading = false;
-  const deletedGoalId = action.payload;
-
-  // Update the weeklyGoal array by filtering out the deleted goal
-  state.weeklyGoal = state.weeklyGoal.filter(goal => goal._id !== deletedGoalId);
-})
+      .addCase(updateWeeklyGoal.fulfilled, (state, action) => {
+        const { _id, ...updates } = action.payload;
+        state.weeklyGoal = state.weeklyGoal.map(goal =>
+          goal._id === _id ? { ...goal, ...updates } : goal
+        );
+        console.log("État Redux mis à jour :", state.weeklyGoal);
+      })
+      // Delete Weekly Goal
+      .addCase(deleteWeeklyGoal.fulfilled, (state, action) => {
+        state.loading = false;
+        const deletedGoalId = action.payload;
+        state.weeklyGoal = state.weeklyGoal.filter(goal => goal._id !== deletedGoalId);
+      })
       // Handle pending state for updateNotes
       .addCase(updateNotes.pending, (state) => {
         state.loading = true;

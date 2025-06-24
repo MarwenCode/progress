@@ -1,161 +1,183 @@
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #222;
-  color: #fff;
-  padding: 0.2rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 10vh;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  background: #181818;
+  padding: 0.7rem 2rem;
+  min-height: 64px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 10;
 }
 
-/* LOGO */
 .logo {
-  cursor: pointer;
   display: flex;
   align-items: center;
-
-  .logo-image {
-    width: 70px;
-    max-height: 150px;
-    border-radius: 50%;
-    object-fit: contain;
-    transition: transform 0.3s ease;
-  }
+  cursor: pointer;
 }
 
-/* LIENS Home / Features / Pricing */
+.logo-image {
+  height: 44px;
+  width: auto;
+}
+
 .nav-pages {
   display: flex;
   gap: 2rem;
-  align-items: center;
-  margin-left: 2rem;
-
-  span {
-    cursor: pointer;
-    font-size: 1rem;
-    color: #fff;
-    font-weight: 500;
-    transition: color 0.3s ease;
-
-    &:hover {
-      color: #ff6f61;
-    }
-  }
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
-/* CARTES JOURNALIER / HEBDOMADAIRE / MENSUEL */
+.nav-pages span {
+  color: #fff;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nav-pages span:hover {
+  color: #ff5c5c;
+}
+
 .icons-cards {
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 1rem 1rem;
-
-  .card {
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #ff6f61, #ffb347);
-    color: #fff;
-    font-size: 1rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      transform: translateY(-5px) scale(1.05);
-      background: linear-gradient(135deg, #ffb347, #ff6f61);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    p {
-      margin: 0;
-    }
-  }
+  gap: 0.7rem;
+  margin-left: 2rem;
 }
 
-/* ICÔNES UTILISATEUR */
+.card {
+  background: #222;
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.card:hover {
+  background: #ff5c5c;
+  color: #fff;
+}
+
 .nav-icons {
   display: flex;
-  gap: 1.5rem;
   align-items: center;
-  margin-left: auto;
+  gap: 1.2rem;
+  margin-left: 2rem;
+}
 
-  .nav-item {
-    cursor: pointer;
-    font-size: 1.2rem;
+.nav-item {
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.nav-item:hover {
+  color: #ff5c5c;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.5rem;
+  // border: 2px solid #ff5c5c;
+  
+  // Styling for FontAwesome icon
+  &.fa-user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
     color: #fff;
-    transition: color 0.3s ease, transform 0.2s;
-
-    img {
-      width: 40px; 
-      aspect-ratio: 1;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    
-    }
-
-    &:hover {
-      color: #ff6f61;
-      transform: scale(1.2);
-    }
+    font-size: 1.2rem;
   }
 }
 
-/* BOUTONS LOGIN / SIGNOUT */
+.user-name {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
 .auth-links {
   display: flex;
   align-items: center;
-  margin-left: 1.5rem;
+  gap: 1rem;
+  margin-left: 2rem;
 }
 
-.signout-button,
-.login-button {
+.signout-button {
+  background: #ff5c5c;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  font-weight: bold;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: bold;
-  padding: 0.5rem 1.5rem;
-  border-radius: 5px;
-  background-color: #ff6f61;
-  color: #fff;
-  transition: background-color 0.3s, transform 0.3s;
+  transition: background 0.2s;
+}
 
-  &:hover {
-    background-color: #ff6347;
-    transform: scale(1.05);
+.signout-button:hover {
+  background: #ff3838;
+}
+
+.auth-dropdown {
+  position: relative;
+
+  .auth-button {
+    background: #ff5c5c;
+    color: #fff;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+  }
+
+  .auth-button:hover {
+    background: #ff3838;
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: #222;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 5;
+    min-width: 120px;
+
+    div {
+      padding: 0.6rem 1rem;
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #ff5c5c;
+      }
+    }
   }
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem;
-    height: auto;
-  }
-
-  .nav-pages {
-    margin: 1rem 0;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .nav-icons {
-    flex-direction: row;
-    gap: 1rem;
-    margin: 1rem 0;
-  }
-
+@media (max-width: 900px) {
+  .nav-pages,
+  .icons-cards,
+  .nav-icons,
   .auth-links {
-    margin-top: 1rem;
+    gap: 1rem;
+    margin-left: 1rem;
+  }
+
+  .navbar {
+    padding: 0.7rem 1rem;
   }
 }

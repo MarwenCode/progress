@@ -1,65 +1,49 @@
 // controllers/weeklyController.js
 import Weekly from '../models/Weekly.js';  // You'll need to create this model
 
+// Get all weekly goals for the current user
 export const getWeeklyGoal = async (req, res) => {
   try {
-    const weeklyGoals = await Weekly.find(); // Fetch all weekly goals
+    const userId = req.user._id;
+    console.log('Fetching weekly goals for user:', userId);
+    
+    const weeklyGoals = await Weekly.find({ user: userId }).sort({ createdAt: -1 });
+    console.log(`Found ${weeklyGoals.length} weekly goals for user ${userId}`);
+    
     res.status(200).json(weeklyGoals);
   } catch (error) {
+    console.error('Error fetching weekly goals:', error);
     res.status(500).json({ message: error.message });
   }
 };
 
-
-  
-  
-
-
+// Create a new weekly goal
 export const createWeeklyGoal = async (req, res) => {
   try {
-    const newWeeklyGoal = new Weekly(req.body);
+    const userId = req.user._id;
+    console.log('Creating weekly goal for user:', userId);
+    
+    const newWeeklyGoal = new Weekly({ ...req.body, user: userId });
     const savedGoal = await newWeeklyGoal.save();
+    
+    console.log('Weekly goal created successfully:', savedGoal._id);
     res.status(201).json(savedGoal);
-    console.log('Saving new goal:', req.body);
-
   } catch (error) {
+    console.error('Error creating weekly goal:', error);
     res.status(500).json({ message: error.message });
   }
 };
 
-
-
-// Update Weekly Goal
-// export const updateWeeklyGoal = async (req, res) => {
-//   const { id } = req.params; // The ID of the goal to update
-//   const { name, selectedDays, details, notes, progress } = req.body;
-
-//   try {
-//     const updatedGoal = await Weekly.findByIdAndUpdate(
-//       id,
-//       { name, selectedDays, details, notes, progress },
-//       { new: true, runValidators: true } // Return the updated document and validate the input
-//     );
-
-//     if (!updatedGoal) {
-//       return res.status(404).json({ message: 'Weekly goal not found.' });
-//     }
-
-//     res.status(200).json(updatedGoal);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Failed to update weekly goal.', error: error.message });
-//   }
-// };
-
-
+// Update weekly goal
 export const updateWeeklyGoal = async (req, res) => {
-  const { id } = req.params;
-  console.log("ID reçu pour mise à jour:", id); // Debugging
-
   try {
-    const updatedGoal = await Weekly.findByIdAndUpdate(
-      id,
-      { ...req.body }, // Mise à jour avec tout le contenu
+    const { id } = req.params;
+    const userId = req.user._id;
+    console.log('Updating weekly goal:', id, 'for user:', userId);
+
+    const updatedGoal = await Weekly.findOneAndUpdate(
+      { _id: id, user: userId },
+      { ...req.body },
       { new: true, runValidators: true }
     );
 
@@ -67,38 +51,38 @@ export const updateWeeklyGoal = async (req, res) => {
       return res.status(404).json({ message: "Objectif hebdomadaire non trouvé." });
     }
 
+    console.log('Weekly goal updated successfully');
     res.status(200).json(updatedGoal);
   } catch (error) {
+    console.error('Error updating weekly goal:', error);
     res.status(500).json({ message: "Échec de la mise à jour.", error: error.message });
   }
 };
 
-
-
 // Update only the notes field of a weekly goal
 export const updateWeeklyGoalNotes = async (req, res) => {
-  const { id } = req.params; // Extract the id from the URL
-  const { notes } = req.body; // Extract the notes field from the request body
-
-  console.log("Received update request for notes with ID:", id); // Debugging log
-  console.log("Notes data:", notes); // Debugging log
-
-  if (!notes || typeof notes !== "object") {
-    return res.status(400).json({ message: "Invalid notes data" });
-  }
-
   try {
-    const updatedGoal = await Weekly.findByIdAndUpdate(
-      id,
-      { $set: { notes } }, // Explicitly update the notes field
-      { new: true } // Return the updated document
+    const { id } = req.params;
+    const userId = req.user._id;
+    const { notes } = req.body;
+
+    console.log('Updating notes for weekly goal:', id, 'for user:', userId);
+
+    if (!notes || typeof notes !== "object") {
+      return res.status(400).json({ message: "Invalid notes data" });
+    }
+
+    const updatedGoal = await Weekly.findOneAndUpdate(
+      { _id: id, user: userId },
+      { $set: { notes } },
+      { new: true }
     );
 
     if (!updatedGoal) {
       return res.status(404).json({ message: "Goal not found" });
     }
 
-    console.log("Updated goal notes in database:", updatedGoal); // Debugging log
+    console.log('Weekly goal notes updated successfully');
     res.status(200).json(updatedGoal);
   } catch (error) {
     console.error("Error updating goal notes:", error);
@@ -106,14 +90,24 @@ export const updateWeeklyGoalNotes = async (req, res) => {
   }
 };
 
-//delete a weekly Goal 
+// Delete a weekly goal
 export const deleteWeeklyGoal = async (req, res) => {
   try {
     const goalId = req.params.id;
-    await Weekly.findByIdAndDelete(goalId);
-    res.status(200).json(goalId); // Send the deleted goal's ID
+    const userId = req.user._id;
+    console.log('Deleting weekly goal:', goalId, 'for user:', userId);
+    
+    const deletedGoal = await Weekly.findOneAndDelete({ _id: goalId, user: userId });
+    
+    if (!deletedGoal) {
+      return res.status(404).json({ message: "Goal not found" });
+    }
+    
+    console.log('Weekly goal deleted successfully');
+    res.status(200).json({ message: 'Goal deleted successfully', deletedGoal });
   } catch (error) {
-    res.status(404).json({ message: "Goal not found" });
+    console.error('Error deleting weekly goal:', error);
+    res.status(500).json({ message: "Error deleting goal" });
   }
 };
 

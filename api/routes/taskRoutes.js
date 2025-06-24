@@ -40,41 +40,29 @@ import {
 
 const router = Router();
 
-// Daily Tasks
-router.get("/daily", getTasks);
-router.post("/daily", createTask);
-router.put("/daily/:id", updateTask);
-router.delete("/daily/:id", deleteTask);
+// Daily Tasks (protected routes)
+router.get("/daily", authenticateUser, getTasks);
+router.post("/daily", authenticateUser, createTask);
+router.put("/daily/:id", authenticateUser, updateTask);
+router.delete("/daily/:id", authenticateUser, deleteTask);
 
-// Weekly Goals
-router.post("/weekly", createWeeklyGoal);
-router.get("/weekly", getWeeklyGoal);
-router.put("/weekly/:id", updateWeeklyGoal);
-router.put("/weekly/notes/:id", updateWeeklyGoalNotes);
-router.delete("/weekly/:id", deleteWeeklyGoal);
+// Weekly Goals (protected routes)
+router.post("/weekly", authenticateUser, createWeeklyGoal);
+router.get("/weekly", authenticateUser, getWeeklyGoal);
+router.put("/weekly/:id", authenticateUser, updateWeeklyGoal);
+router.put("/weekly/notes/:id", authenticateUser, updateWeeklyGoalNotes);
+router.delete("/weekly/:id", authenticateUser, deleteWeeklyGoal);
 
-// Monthly Goals
-router.get("/monthly", getMonthlyGoals);
-router.post("/monthly", createMonthlyGoal);
-router.post("/monthly/:goalId/tasks", addTaskToGoal);
-router.patch("/monthly/:goalId/tasks/:taskId", completedTaskChecked);
-router.delete("/monthly/:id", deleteMonthlyGoal);
+// Monthly Goals (protected routes)
+router.get("/monthly", authenticateUser, getMonthlyGoals);
+router.post("/monthly", authenticateUser, createMonthlyGoal);
+router.post("/monthly/:goalId/tasks", authenticateUser, addTaskToGoal);
+router.patch("/monthly/:goalId/tasks/:taskId", authenticateUser, completedTaskChecked);
+router.delete("/monthly/:id", authenticateUser, deleteMonthlyGoal);
 
-// Floating Notes
-router.get("/floating-notes", getFloatingNotes);
-router.post("/floating-notes", createFloatingNote);
-router.delete("/floating-notes/:id", deleteFloatingNote);
-
-// User Auth
-router.post("/user/register", registerUser);
-router.post("/user/login", loginUser);
-router.get("/user/profile", authenticateUser, getUserProfile);
-router.put(
-  "/user/update",
-  authenticateUser,
-  upload.single("avatar"),
-  updateUserProfile
-);
-router.delete("/user/delete", authenticateUser, deleteUserProfile);
+// Floating Notes (protected routes)
+router.get("/floating-notes", authenticateUser, getFloatingNotes);
+router.post("/floating-notes", authenticateUser, createFloatingNote);
+router.delete("/floating-notes/:id", authenticateUser, deleteFloatingNote);
 
 export default router;

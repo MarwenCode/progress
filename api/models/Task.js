@@ -15,6 +15,11 @@ const taskSchema = new Schema(
       default: false,
     },
     icon: { type: String, default: 'tree' },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    }
   },
   {
     timestamps: true,
