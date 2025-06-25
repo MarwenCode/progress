@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../../redux/authSlice/authSlice';
+import { login } from '../../redux/userSlice/userSlice';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/auth';
@@ -44,7 +44,7 @@ const GoogleCallback = () => {
           const userWithToken = { ...userData, token };
           localStorage.setItem('user', JSON.stringify(userWithToken));
           
-          // Update Redux state with the full user object
+          // Update Redux state with the full user object (userSlice)
           dispatch(login(userWithToken));
           
           // Redirect to home page

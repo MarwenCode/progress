@@ -8,176 +8,246 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   position: relative;
   z-index: 10;
-}
 
-.logo {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.logo-image {
-  height: 44px;
-  width: auto;
-}
-
-.nav-pages {
-  display: flex;
-  gap: 2rem;
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.nav-pages span {
-  color: #fff;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.nav-pages span:hover {
-  color: #ff5c5c;
-}
-
-.icons-cards {
-  display: flex;
-  gap: 0.7rem;
-  margin-left: 2rem;
-}
-
-.card {
-  background: #222;
-  color: #fff;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-}
-
-.card:hover {
-  background: #ff5c5c;
-  color: #fff;
-}
-
-.nav-icons {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-  margin-left: 2rem;
-}
-
-.nav-item {
-  color: #fff;
-  font-size: 1.3rem;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.nav-item:hover {
-  color: #ff5c5c;
-}
-
-.user-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 0.5rem;
-  // border: 2px solid #ff5c5c;
-  
-  // Styling for FontAwesome icon
-  &.fa-user {
+  .logo {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    background-color: #333;
-    color: #fff;
-    font-size: 1.2rem;
-  }
-}
-
-.user-name {
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-.auth-links {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-left: 2rem;
-}
-
-.signout-button {
-  background: #ff5c5c;
-  color: #fff;
-  padding: 0.5rem 1.2rem;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.2s;
-}
-
-.signout-button:hover {
-  background: #ff3838;
-}
-
-.auth-dropdown {
-  position: relative;
-
-  .auth-button {
-    background: #ff5c5c;
-    color: #fff;
-    padding: 0.5rem 1.2rem;
-    border-radius: 4px;
-    font-weight: bold;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.2s;
-  }
 
-  .auth-button:hover {
-    background: #ff3838;
-  }
-
-  .dropdown-menu {
-    position: absolute;
-    top: 110%;
-    right: 0;
-    background: #222;
-    border-radius: 6px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    z-index: 5;
-    min-width: 120px;
-
-    div {
-      padding: 0.6rem 1rem;
-      color: #fff;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.2s;
+    .logo-image {
+      height: 64px;
+      width: 74px;
+      border-radius: 16px;
+      transition: transform 0.3s cubic-bezier(0.4, 0.2, 0.2, 1);
 
       &:hover {
+        transform: scale(1.08) rotate(-4deg);
+      }
+    }
+
+    .steps-logo-text {
+      display: flex;
+      gap: 6px;
+      margin-top: 0;
+      margin-left: 12px;
+      
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: #111;
+        color: #fff;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 1.1rem;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        letter-spacing: 0;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: steps-fade-in 0.5s forwards;
+        transition: transform 0.2s, background 0.2s, color 0.2s;
+      }
+
+      span:nth-child(1) { animation-delay: 0.1s; }
+      span:nth-child(2) { animation-delay: 0.22s; }
+      span:nth-child(3) { animation-delay: 0.34s; }
+      span:nth-child(4) { animation-delay: 0.46s; }
+      span:nth-child(5) { animation-delay: 0.58s; }
+
+      span:hover {
         background: #ff5c5c;
+        color: #fff;
+        transform: scale(1.15);
       }
     }
   }
-}
 
-@media (max-width: 900px) {
-  .nav-pages,
-  .icons-cards,
-  .nav-icons,
-  .auth-links {
-    gap: 1rem;
-    margin-left: 1rem;
+  .nav-pages {
+    display: flex;
+    gap: 2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+
+    span {
+      color: #fff;
+      cursor: pointer;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #ff5c5c;
+      }
+    }
   }
 
-  .navbar {
-    padding: 0.7rem 1rem;
+  .icons-cards {
+    display: flex;
+    gap: 0.7rem;
+    margin-left: 2rem;
+
+    .card {
+      background: #222;
+      color: #fff;
+      border-radius: 6px;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      height: 20px;
+      width: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: #ff5c5c;
+        color: #fff;
+      }
+    }
+  }
+
+  .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-left: 2rem;
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #ff5c5c;
+      }
+
+      .home-profile-icon {
+        margin-right: 10px;
+        font-size: 1.3rem;
+        color: #fff;
+        cursor: pointer;
+        transition: color 0.2s;
+        &:hover {
+          color: #ff5c5c;
+        }
+      }
+
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 0.5rem;
+        // border: 2px solid #ff5c5c;
+
+        &.fa-user {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #333;
+          color: #fff;
+          font-size: 1.2rem;
+        }
+      }
+
+      .user-name {
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-left: 0;
+      }
+    }
+  }
+
+  .auth-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: 2rem;
+
+    .signout-button {
+      background: #ff5c5c;
+      color: #fff;
+      padding: 0.5rem 1.2rem;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #ff3838;
+      }
+    }
+
+    .auth-dropdown {
+      position: relative;
+
+      .auth-button {
+        background: #ff5c5c;
+        color: #fff;
+        padding: 0.5rem 1.2rem;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+
+        &:hover {
+          background: #ff3838;
+        }
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 110%;
+        right: 0;
+        background: #222;
+        border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        z-index: 5;
+        min-width: 120px;
+
+        div {
+          padding: 0.6rem 1rem;
+          color: #fff;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background 0.2s;
+
+          &:hover {
+            background: #ff5c5c;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 900px) {
+    .nav-pages,
+    .icons-cards,
+    .nav-icons,
+    .auth-links {
+      gap: 1rem;
+      margin-left: 1rem;
+    }
+
+    & {
+      padding: 0.7rem 1rem;
+    }
+  }
+
+  @keyframes steps-fade-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

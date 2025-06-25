@@ -5,6 +5,10 @@
   justify-content: center;
   min-height: 80vh;
   background: #111;
+
+  h2, label {
+    color: #fff;
+  }
 }
 
 .google-btn {
@@ -24,9 +28,6 @@
   box-shadow: 0 2px 4px rgba(0,0,0,0.04);
   gap: 10px;
   min-width: 220px;
-}
-
-.google-btn  {
   margin-right: 10px;
   vertical-align: middle;
   flex-shrink: 0;
@@ -36,26 +37,14 @@
     font-weight: 500;
     font-size: 1rem;
     color: black;
-    
+    color: #222 !important;
   }
-  
-}
 
-.google-btn:hover {
-  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.15);
-  border-color: #4285f4;
-  color: #4285f4;
-}
-
-.auth-container h2, .auth-container label {
-  color: #fff;
-}
-
-.google-btn span {
-  color: #222 !important;
-  font-weight: 500;
-  font-size: 1rem;
-  vertical-align: middle;
+  &:hover {
+    box-shadow: 0 2px 8px rgba(66, 133, 244, 0.15);
+    border-color: #4285f4;
+    color: #4285f4;
+  }
 }
 
 .auth-input {
@@ -70,27 +59,26 @@
   outline: none;
   transition: border 0.2s;
   margin-bottom: 0;
-}
 
-.auth-input:focus {
-  border-color: #ff6f61;
+  &:focus {
+    border-color: #ff6f61;
+  }
 }
 
 .password-input-wrapper {
   display: flex;
   align-items: center;
   position: relative;
-}
 
-.password-input-wrapper .auth-input {
-  margin-bottom: 0;
-  padding-right: 44px; /* space for the icon */
+  .auth-input {
+    margin-bottom: 0;
+    padding-right: 44px; /* space for the icon */
+  }
 }
 
 .password-toggle-btn {
   position: absolute;
   right: 12px;
- 
   background: none;
   border: none;
   cursor: pointer;
@@ -99,39 +87,39 @@
   display: flex;
   align-items: center;
   height: 100%;
-}
 
-.password-toggle-btn:focus {
-  outline: none;
-}
+  &:focus {
+    outline: none;
+  }
 
-.password-toggle-btn:hover,
-.password-toggle-btn:focus {
-  color: #888;
-  background: none;
-  outline: none;
-  box-shadow: none;
-} 
+  &:hover,
+  &:focus {
+    color: #888;
+    background: none;
+    outline: none;
+    box-shadow: none;
+  }
+}
 
 .auth-dropdown {
   position: relative;
   display: inline-block;
-}
 
-.auth-button {
-  width: 80px;
-}
+  .auth-button {
+    width: 80px;
+  }
 
-.dropdown-menu {
-  position: absolute;
-  left: 0;
-  top: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-  z-index: 10;
+  .dropdown-menu {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    z-index: 10;
+  }
 }

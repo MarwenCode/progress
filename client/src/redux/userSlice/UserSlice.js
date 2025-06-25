@@ -140,6 +140,12 @@ export const userSlice = createSlice({
       state.isError = false;
       state.message = "";
     },
+    login: (state, action) => {
+      state.user = action.payload;
+      state.isSuccess = true;
+      state.isError = false;
+      state.message = "";
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -244,5 +250,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { reset } = userSlice.actions;
+export const { reset, login } = userSlice.actions;
 export default userSlice.reducer;

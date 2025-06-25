@@ -29,11 +29,8 @@
         }
       }
     }
-  }
-
-
-  @media (max-width: 480px) {
-    .footer {
+  
+    @media (max-width: 480px) {
       padding: 0.5rem 0.5rem 2rem 0.5rem;
   
       .links {

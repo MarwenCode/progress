@@ -55,7 +55,14 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="logo" onClick={() => navigate("/")}>
-        <img src="assets/steps.png" alt="Steps Logo" className="logo-image" />
+        <img src="/assets/stairs.png" alt="Steps Logo" className="logo-image" />
+        <div className="steps-logo-text">
+          <span>S</span>
+          <span>T</span>
+          <span>E</span>
+          <span>P</span>
+          <span>S</span>
+        </div>
       </div>
 
       <div className="nav-pages">
@@ -103,9 +110,12 @@ const Navbar = () => {
 
       <div className="auth-links">
         {isAuthenticated ? (
-          <div className="signout-button" onClick={handleSignOut}>
-            Signout
-          </div>
+          <>
+           
+            <div className="signout-button" onClick={handleSignOut}>
+              Signout
+            </div>
+          </>
         ) : (
           <div
             className="auth-dropdown"
