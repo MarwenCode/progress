@@ -23,6 +23,8 @@ import Home from "./pages/home/Home";
 import Pricing from "./pages/pricing/Pricing";
 import Features from "./pages/features/Features";
 import Footer from "./components/footer/Footer";
+import Loading from "./components/loading/Loading";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +33,7 @@ function App() {
 
   const user = useSelector((state) => state.auth?.user);
   const isAuthenticated = !!user;
+  const isLoading = useSelector((state) => state.user?.isLoading);
 
   useEffect(() => {
     if (user) {
@@ -46,6 +49,7 @@ function App() {
     <Router>
       <div className="container">
         <Navbar />
+        {isLoading && <Loading />}
         {isAuthenticated && (
           <FloatingButton onClick={() => setIsOpen(!isOpen)} onDragStop={handleDragStop} />
         )}
@@ -85,4 +89,5 @@ function App() {
 }
 
 export default App;
+
 

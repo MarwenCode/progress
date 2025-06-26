@@ -210,16 +210,17 @@
     .add-goal-btn {
       margin-top: 2rem;
       padding: 1rem 2rem;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      background-color: #ff6f61;
       border: none;
       border-radius: 8px;
       color: white;
-      font-weight: 600;
+      font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s ease;
+      transition: transform 0.3s, background 0.3s;
   
       &:hover {
-        background: linear-gradient(135deg, #5b0ecc, #1d63e4);
+        transform: scale(1.05);
+          background-color: #ff6347;
       }
     }
   
@@ -321,4 +322,18 @@
   }
 
   
+}
+
+.goal-details-box {
+  background: #222;
+  border: 1.5px solid #ff6f61;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  color: #fff;
+  font-size: 1.05rem;
+  font-family: inherit;
+  min-height: 60px;
+  white-space: pre-line;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }

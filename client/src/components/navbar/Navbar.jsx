@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../redux/authSlice/authSlice";
+import { logoutUser } from "../../redux/userSlice/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseChimney, faUser } from "@fortawesome/free-solid-svg-icons";
 import Profile from "../profile/Profile";
@@ -35,7 +35,7 @@ const Navbar = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem("user");
-    dispatch(logout());
+    dispatch(logoutUser());
     navigate("/login");
   };
 
@@ -86,10 +86,7 @@ const Navbar = () => {
       )}
 
       {isAuthenticated && (
-        <div className="nav-icons">
-          <div className="nav-item" onClick={() => navigate("/")}>
-            <FontAwesomeIcon icon={faHouseChimney} />
-          </div>
+        <div className="nav-actions">
           <div className="nav-item" onClick={() => setIsProfileOpen(true)}>
             {showAvatarIcon ? (
               <FontAwesomeIcon icon={faUser} className="user-avatar fa-user" />
@@ -105,33 +102,14 @@ const Navbar = () => {
             )}
             <span className="user-name">{user?.username}</span>
           </div>
+          <div className="nav-item" onClick={() => navigate("/")}> 
+            <FontAwesomeIcon icon={faHouseChimney} />
+          </div>
+          <div className="signout-button" onClick={handleSignOut}>
+            Sign out
+          </div>
         </div>
       )}
-
-      <div className="auth-links">
-        {isAuthenticated ? (
-          <>
-           
-            <div className="signout-button" onClick={handleSignOut}>
-              Signout
-            </div>
-          </>
-        ) : (
-          <div
-            className="auth-dropdown"
-            onMouseEnter={() => setAuthDropdownOpen(true)}
-            onMouseLeave={() => setAuthDropdownOpen(false)}
-          >
-            <div className="auth-button">Sign In ▾</div>
-            {authDropdownOpen && (
-              <div className="dropdown-menu">
-                <div onClick={handleLogin}>Login</div>
-                <div onClick={handleRegister}>Register</div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
 
       <Profile isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} />
     </nav>

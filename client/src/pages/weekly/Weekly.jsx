@@ -292,9 +292,9 @@ const Weekly = () => {
         onClick={handleDeliteGoal}
       />
     </div>
-    <p className="goal-details">
+    <div className="goal-details-box">
       {weeklyGoal[weeklyGoal.length - 1].details}
-    </p>
+    </div>
     {/* <p className="goal-date">
       Created:
       {new Date(

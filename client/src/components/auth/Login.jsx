@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { login, googleLogin, reset } from '../../redux/authSlice/authSlice';
+import { loginUser, reset } from '../../redux/userSlice/userSlice';
 import { FcGoogle } from 'react-icons/fc'; // Icône Google officielle en couleur
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -21,7 +21,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.auth || {}
+    (state) => state.user || {}
   );
 
   useEffect(() => {
@@ -53,26 +53,8 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(formData));
+    dispatch(loginUser(formData));
   };
-
-  const handleGoogleLogin = () => {
-    console.log('Initiating Google login...');
-    dispatch(googleLogin());
-  };
-
-  if (isLoading) {
-    return (
-      <div className="auth-container">
-        <div className="auth-form-box">
-          <div className="text-center">
-            <h2>Signing in...</h2>
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mt-4"></div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="auth-container">
@@ -117,7 +99,6 @@ const Login = () => {
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
                 className="password-toggle-btn"
-                // tabIndex={-1}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
@@ -133,7 +114,6 @@ const Login = () => {
           <span style={{ color: '#fff' }}>Or continue with</span>
           <div style={{ marginTop: '1rem' }}>
             <button 
-              onClick={handleGoogleLogin} 
               className="google-btn"
               disabled={isLoading}
             >
