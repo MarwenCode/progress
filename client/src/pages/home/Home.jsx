@@ -13,7 +13,6 @@ const Home = () => {
           <p>Your ultimate productivity companion to track daily, weekly, and monthly goals with visual progress and sticky notes.</p>
           <button onClick={() => navigate("/register")}>Get Started</button>
         </div>
-        <img src="/assets/screenshot.png" alt="App Screenshot" className="hero-image" />
       </header>
 
       <section className="features-section">
@@ -50,6 +49,22 @@ const Home = () => {
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
+        </div>
+      </section>
+
+      <section className="app-showcase-section">
+        <h2>Experience STEPS</h2>
+        <div className="app-showcase">
+          <div className="showcase-item">
+            <h3>Daily Goals</h3>
+            <img src="/assets/Daily%20Goal.png" alt="Daily Goals" className="showcase-image" />
+            <p>Track your daily tasks and see your progress in real-time</p>
+          </div>
+          <div className="showcase-item">
+            <h3>Weekly Goals</h3>
+            <img src="/assets/Weekly%20Goal.png" alt="Weekly Goals" className="showcase-image" />
+            <p>Plan your week ahead and monitor your achievements</p>
+          </div>
         </div>
       </section>
 
