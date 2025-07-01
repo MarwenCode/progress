@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { loginUser, reset } from '../../redux/userSlice/userSlice';
+import { login, reset } from '../../redux/authSlice/authSlice';
 import { FcGoogle } from 'react-icons/fc'; // Icône Google officielle en couleur
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -21,7 +21,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.user || {}
+    (state) => state.auth || {}
   );
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser(formData));
+    dispatch(login(formData));
   };
 
   return (
@@ -116,6 +116,9 @@ const Login = () => {
             <button 
               className="google-btn"
               disabled={isLoading}
+              onClick={() => {
+                window.location.href = "http://localhost:5000/api/auth/google";
+              }}
             >
               <FcGoogle size={20} style={{ marginRight: '8px' }} />
               <span>Sign in with Google</span>

@@ -92,6 +92,57 @@ export const getCurrentUser = createAsyncThunk(
   }
 );
 
+// Update user profile
+export const updateUserProfile = createAsyncThunk(
+  'auth/updateProfile',
+  async (userData, thunkAPI) => {
+    try {
+      const user = thunkAPI.getState().auth.user;
+      if (!user || !user.token) {
+        throw new Error('No user or token found');
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+
+      const response = await axios.put(`${API_URL}/user/update`, userData, config);
+      return response.data;
+    } catch (error) {
+      const message = error.response?.data?.message || error.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+// Delete user profile
+export const deleteUserProfile = createAsyncThunk(
+  'auth/deleteProfile',
+  async (_, thunkAPI) => {
+    try {
+      const user = thunkAPI.getState().auth.user;
+      if (!user || !user.token) {
+        throw new Error('No user or token found');
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      };
+
+      await axios.delete(`${API_URL}/user/delete`, config);
+      localStorage.removeItem('user');
+    } catch (error) {
+      const message = error.response?.data?.message || error.message;
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 // Logout user
 export const logout = createAsyncThunk('auth/logout', async () => {
   localStorage.removeItem('user');
@@ -177,6 +228,44 @@ export const authSlice = createSlice({
         state.message = '';
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.user = null;
+        state.isSuccess = false;
+      })
+      // Update User Profile
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = { ...state.user, ...action.payload };
+        state.isError = false;
+        state.message = '';
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.user = null;
+        state.isSuccess = false;
+      })
+      // Delete User Profile
+      .addCase(deleteUserProfile.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(deleteUserProfile.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = null;
+        state.isError = false;
+        state.message = '';
+      })
+      .addCase(deleteUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

@@ -6,7 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile } from "./redux/userSlice/UserSlice";
+import { getCurrentUser } from "./redux/authSlice/authSlice";
 import "./App.css";
 
 import Dashboard from "./components/dashboard/Dashboard";
@@ -33,13 +33,16 @@ function App() {
 
   const user = useSelector((state) => state.auth?.user);
   const isAuthenticated = !!user;
-  const isLoading = useSelector((state) => state.user?.isLoading);
+  const isLoading = useSelector((state) => state.auth?.isLoading);
 
   useEffect(() => {
-    if (user) {
-      dispatch(getUserProfile());
+    // Only check current user on initial load if user exists in localStorage
+    // but not in Redux state (i.e., page refresh)
+    const userFromStorage = JSON.parse(localStorage.getItem('user'));
+    if (userFromStorage && !user) {
+      dispatch(getCurrentUser());
     }
-  }, [dispatch, user]);
+  }, []); // Empty dependency array - only run once on mount
 
   const handleDragStop = (e, data) => {
     setButtonPosition({ x: data.x, y: data.y });

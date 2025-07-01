@@ -1,6 +1,4 @@
-import Task from '../models/task.js';  // Import Task model
-
-
+import Task from '../models/Task.js';  // Import Task model
 
 // Create a new task
 export const createTask = async (req, res) => {
@@ -28,10 +26,6 @@ export const createTask = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
-
-
-
 
 // Get all tasks for the current user
 export const getTasks = async (req, res) => {

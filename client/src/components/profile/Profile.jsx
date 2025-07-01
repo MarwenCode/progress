@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   updateUserProfile,
   deleteUserProfile,
-} from "../../redux/userSlice/userSlice";
+} from "../../redux/authSlice/authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { faHeartBroken } from "@fortawesome/free-solid-svg-icons";
@@ -12,8 +12,8 @@ import "./profile.scss";
 
 const Profile = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
-  const isLoading = useSelector((state) => state.user.isLoading);
+  const user = useSelector((state) => state.auth.user);
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   // States for the form
   const [username, setUsername] = useState("");

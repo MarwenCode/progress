@@ -39,9 +39,6 @@ import authRoutes from './routes/authRoutes.js';
 import passport from './config/passport.js';
 import userRoutes from './routes/userRoutes.js';
 
-// Connexion à MongoDB
-connectDB();
-
 // Initialisation d'Express
 const app = express();
 
@@ -72,8 +69,22 @@ app.get('/', (req, res) => {
   res.send('STEPS API is running!');
 });
 
-// Démarrer le serveur
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Start server function
+const startServer = async () => {
+  try {
+    // Connect to MongoDB first
+    await connectDB();
+    
+    // Then start the server
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+// Start the server
+startServer();

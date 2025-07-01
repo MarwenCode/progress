@@ -107,6 +107,17 @@
         background: #ff5c5c;
         color: #fff;
       }
+
+      &.rewards {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        font-size: 0.8rem;
+
+        &:hover {
+          background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+          transform: scale(1.1);
+        }
+      }
     }
   }
 
@@ -162,6 +173,31 @@
         font-size: 1rem;
         font-weight: 500;
         margin-left: 0;
+      }
+    }
+
+    .points-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+      .points-number {
+        font-size: 1.2rem;
+        font-weight: bold;
+        line-height: 1;
+      }
+
+      .points-label {
+        font-size: 0.7rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
     }
   }

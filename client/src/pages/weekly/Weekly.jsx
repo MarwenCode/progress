@@ -78,16 +78,6 @@ const Weekly = () => {
 
   // Fetch goals on component mount
   useEffect(() => {
-    dispatch(getWeeklyGoal());
-  }, [dispatch]);
-
-  // Update progress based on selected days
-  useEffect(() => {
-    const progressPercentage = (selectedDays.length / 7) * 100;
-    setProgress(progressPercentage);
-  }, [selectedDays]);
-
-  useEffect(() => {
     const fetchGoals = async () => {
       try {
         const response = await dispatch(getWeeklyGoal()).unwrap();
@@ -103,6 +93,12 @@ const Weekly = () => {
 
     fetchGoals();
   }, [dispatch]);
+
+  // Update progress based on selected days
+  useEffect(() => {
+    const progressPercentage = (selectedDays.length / 7) * 100;
+    setProgress(progressPercentage);
+  }, [selectedDays]);
 
   // Update selected days for an existing goal
   const handleUpdateSelectedDays = async (goalId, newSelectedDays) => {
