@@ -1,4 +1,4 @@
-import FloatingNotes from "../models/floatingNotes.js";
+import FloatingNotes from "../models/FloatingNotes.js";
 
 // Get all floating notes for the current user
 export const getFloatingNotes = async (req, res) => {
