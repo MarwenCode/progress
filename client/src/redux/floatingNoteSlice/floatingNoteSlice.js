@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk }from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/tasks/floating-notes';
+const API_URL = `${import.meta.env.VITE_API_URL}/tasks/floating-notes`;
 
 // Helper function to get auth config
 const getAuthConfig = () => {

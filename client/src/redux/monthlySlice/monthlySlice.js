@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { createWeeklyGoal } from "../weeklySlice/weeklySlice";
 
-const API_URL = "http://localhost:5000/api/tasks/monthly";
+const API_URL = `${import.meta.env.VITE_API_URL}/tasks/monthly`;
 
 // Helper function to get auth config
 const getAuthConfig = () => {

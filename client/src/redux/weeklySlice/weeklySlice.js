@@ -11,6 +11,9 @@ const getAuthConfig = () => {
   };
 };
 
+// Replace all hardcoded API URLs with the environment variable
+const API_URL = `${import.meta.env.VITE_API_URL}/tasks/weekly`;
+
 //Fetch weekly Goal
 export const getWeeklyGoal = createAsyncThunk(
   "weekly/getWeeklyGoal",
@@ -19,7 +22,7 @@ export const getWeeklyGoal = createAsyncThunk(
       console.log("Fetching weekly goals");
       const config = getAuthConfig();
       const response = await axios.get(
-        "http://localhost:5000/api/tasks/weekly",
+        API_URL,
         config
       );
       console.log("Response:", response.data);
@@ -41,7 +44,7 @@ export const createWeeklyGoal = createAsyncThunk(
       console.log("Creating weekly goal with data:", data);
       const config = getAuthConfig();
       const response = await axios.post(
-        "http://localhost:5000/api/tasks/weekly",
+        API_URL,
         data,
         config
       );
@@ -79,7 +82,7 @@ export const updateWeeklyGoal = createAsyncThunk(
     try {
       const config = getAuthConfig();
       const response = await axios.put(
-        `http://localhost:5000/api/tasks/weekly/${id}`, 
+        `${API_URL}/${id}`, 
         updates,
         config
       );
@@ -100,7 +103,7 @@ export const updateNotes = createAsyncThunk(
       console.log("Notes data:", notes);
       const config = getAuthConfig();
       const response = await axios.put(
-        `http://localhost:5000/api/tasks/weekly/notes/${id}`,
+        `${API_URL}/notes/${id}`,
         { notes },
         config
       );
@@ -123,7 +126,7 @@ export const deleteWeeklyGoal = createAsyncThunk(
     try {
       console.log("Deleting goal with ID:", id);
       const config = getAuthConfig();
-      await axios.delete(`http://localhost:5000/api/tasks/weekly/${id}`, config);
+      await axios.delete(`${API_URL}/${id}`, config);
       console.log("Successfully deleted goal with ID:", id);
       return id;
     } catch (error) {

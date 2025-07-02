@@ -11,13 +11,16 @@ const getAuthConfig = () => {
   };
 };
 
+// Replace all hardcoded API URLs with the environment variable
+const API_URL = `${import.meta.env.VITE_API_URL}/tasks/daily`;
+
 // Fetch tasks
 export const getTasks = createAsyncThunk(
   "tasks/getTasks",
   async (_, { rejectWithValue }) => {
     try {
       const config = getAuthConfig();
-      const response = await axios.get("http://localhost:5000/api/tasks/daily", config);
+      const response = await axios.get(API_URL, config);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -34,7 +37,7 @@ export const createTask = createAsyncThunk(
     try {
       const config = getAuthConfig();
       const response = await axios.post(
-        "http://localhost:5000/api/tasks/daily",
+        API_URL,
         task,
         config
       );
@@ -57,7 +60,7 @@ export const updateTask = createAsyncThunk(
 
       const config = getAuthConfig();
       const response = await axios.put(
-        `http://localhost:5000/api/tasks/daily/${id}`,
+        `${API_URL}/${id}`,
         { progress },
         config
       );
@@ -84,7 +87,7 @@ export const deleteTask = createAsyncThunk(
       console.log("Deleting task with ID:", id);
       const config = getAuthConfig();
       const response = await axios.delete(
-        `http://localhost:5000/api/tasks/daily/${id}`,
+        `${API_URL}/${id}`,
         config
       );
       console.log("Task deleted:", response.data);
