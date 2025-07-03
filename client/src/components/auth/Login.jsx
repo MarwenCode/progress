@@ -117,7 +117,7 @@ const Login = () => {
               className="google-btn"
               disabled={isLoading}
               onClick={() => {
-                window.location.href = "https://steps-app-api.onrender.com/api/auth/google";
+                window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
               }}
             >
               <FcGoogle size={20} style={{ marginRight: '8px' }} />

@@ -1,13 +1,20 @@
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import fs from 'fs';
 
 // Get the directory name
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables from the root .env file
-dotenv.config({ path: path.join(__dirname, '../.env') });
+const envLocalPath = path.join(__dirname, '../.env.local');
+const envPath = path.join(__dirname, '../.env');
+
+if (fs.existsSync(envLocalPath)) {
+  dotenv.config({ path: envLocalPath });
+} else {
+  dotenv.config({ path: envPath });
+}
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   console.error('Missing Google OAuth credentials in .env file');

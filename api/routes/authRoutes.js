@@ -6,6 +6,8 @@ import { authenticateUser } from '../controllers/userController.js';
 
 const router = express.Router();
 
+const API_URL = process.env.API_URL; // or whatever variable you need
+
 // Regular email/password authentication
 router.post('/register', register);
 router.post('/login', login);
