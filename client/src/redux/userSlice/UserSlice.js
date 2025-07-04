@@ -26,8 +26,8 @@ export const registerUser = createAsyncThunk(
       }
       return response.data;
     } catch (error) {
-      const message = error.response?.data?.message || error.message;
-      return thunkAPI.rejectWithValue(message);
+      const message = error.response?.data?.message || error.message || "Unknown error";
+      return thunkAPI.rejectWithValue({ message });
     }
   }
 );
@@ -43,8 +43,8 @@ export const loginUser = createAsyncThunk(
       }
       return response.data;
     } catch (error) {
-      const message = error.response?.data?.message || error.message;
-      return thunkAPI.rejectWithValue(message);
+      const message = error.response?.data?.message || error.message || "Unknown error";
+      return thunkAPI.rejectWithValue({ message });
     }
   }
 );
@@ -53,6 +53,7 @@ export const loginUser = createAsyncThunk(
 export const updateUserProfile = createAsyncThunk(
   "user/updateProfile",
   async (userData, thunkAPI) => {
+    console.log('UPDATE PROFILE THUNK START');
     try {
       const user = thunkAPI.getState().user.user;
       if (!user || !user.token) {
@@ -66,11 +67,26 @@ export const updateUserProfile = createAsyncThunk(
         }
       };
 
-      const response = await axios.put(`${API_URL}/user/update`, userData, config);
-      return response.data;
+      let response;
+      try {
+        response = await axios.put(`${API_URL}/user/update`, userData, config);
+        console.log('UPDATE PROFILE RESPONSE:', response);
+      } catch (error) {
+        console.error('UPDATE PROFILE THUNK ERROR:', error);
+        let message = error.message || "Unknown error";
+        return thunkAPI.rejectWithValue({ message });
+      }
+
+      console.log('UPDATE PROFILE PRE-IF:', response);
+      if (response && response.data && typeof response.data.user !== "undefined") {
+        return response.data;
+      } else {
+        console.log('UPDATE PROFILE BAD RESPONSE:', response);
+        return thunkAPI.rejectWithValue({ message: response?.data?.message || "No user in response" });
+      }
     } catch (error) {
-      const message = error.response?.data?.message || error.message;
-      return thunkAPI.rejectWithValue(message);
+      let message = error.message || "Unknown error";
+      return thunkAPI.rejectWithValue({ message });
     }
   }
 );
@@ -94,8 +110,8 @@ export const getUserProfile = createAsyncThunk(
       const response = await axios.get(`${API_URL}/user/profile`, config);
       return response.data;
     } catch (error) {
-      const message = error.response?.data?.message || error.message;
-      return thunkAPI.rejectWithValue(message);
+      const message = error.response?.data?.message || error.message || "Unknown error";
+      return thunkAPI.rejectWithValue({ message });
     }
   }
 );
@@ -119,8 +135,8 @@ export const deleteUserProfile = createAsyncThunk(
       await axios.delete(`${API_URL}/user/delete`, config);
       localStorage.removeItem("user");
     } catch (error) {
-      const message = error.response?.data?.message || error.message;
-      return thunkAPI.rejectWithValue(message);
+      const message = error.response?.data?.message || error.message || "Unknown error";
+      return thunkAPI.rejectWithValue({ message });
     }
   }
 );
@@ -165,7 +181,7 @@ export const userSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload;
+        state.message = action.payload.message;
         state.user = null;
         state.isSuccess = false;
       })
@@ -185,7 +201,7 @@ export const userSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload;
+        state.message = action.payload.message;
         state.user = null;
         state.isSuccess = false;
       })
@@ -197,14 +213,16 @@ export const userSlice = createSlice({
       .addCase(updateUserProfile.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = { ...state.user, ...action.payload.user };
+        if (action.payload && action.payload.user) {
+          state.user = { ...state.user, ...action.payload.user };
+        }
         state.isError = false;
-        state.message = "";
+        state.message = action.payload?.message || "";
       })
       .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload;
+        state.message = action.payload?.message || "Unknown error";
       })
       // Get Profile
       .addCase(getUserProfile.pending, (state) => {
@@ -221,7 +239,7 @@ export const userSlice = createSlice({
       .addCase(getUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload;
+        state.message = action.payload.message;
       })
       // Delete Profile
       .addCase(deleteUserProfile.pending, (state) => {
@@ -238,7 +256,7 @@ export const userSlice = createSlice({
       .addCase(deleteUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.message = action.payload;
+        state.message = action.payload.message;
       })
       // Logout
       .addCase(logoutUser.fulfilled, (state) => {

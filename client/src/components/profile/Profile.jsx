@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   updateUserProfile,
   deleteUserProfile,
-} from "../../redux/authSlice/authSlice";
+} from "../../redux/userSlice/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { faHeartBroken } from "@fortawesome/free-solid-svg-icons";
@@ -12,8 +12,12 @@ import "./profile.scss";
 
 const Profile = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-  const isLoading = useSelector((state) => state.auth.isLoading);
+  const user = useSelector((state) => state.user.user);
+  const isLoading = useSelector((state) => state.user.isLoading);
+  const isError = useSelector((state) => state.user.isError);
+  const message = useSelector((state) => state.user.message);
+
+  console.log("PROFILE COMPONENT STATE:", { user, isLoading, isError, message });
 
   // States for the form
   const [username, setUsername] = useState("");
@@ -25,6 +29,10 @@ const Profile = ({ isOpen, onClose }) => {
   );
   const [showPassword, setShowPassword] = useState(false);
 
+  // Use the correct API URL for user actions
+  const USER_API_URL = `${import.meta.env.VITE_API_URL}/user`;
+  const STATIC_URL = import.meta.env.VITE_API_URL.replace(/\/api$/, '');
+
   // Update form fields with user data
   useEffect(() => {
     if (user) {
@@ -32,10 +40,10 @@ const Profile = ({ isOpen, onClose }) => {
       setEmail(user.email);
       setPreviewAvatar(
         user.avatar
-          ? `http://localhost:5000${user.avatar}`
-          : "assets/default-avatar.png"
+          ? `${STATIC_URL}${user.avatar}`
+          : "/assets/default-avatar.png"
       );
-      setPassword(user.password); // Set the current password
+      setPassword(""); // Do not prefill password
     }
   }, [user]);
 
@@ -50,21 +58,20 @@ const Profile = ({ isOpen, onClose }) => {
 
     try {
       const resultAction = await dispatch(updateUserProfile(formData));
+      console.log("Profile update resultAction:", resultAction);
 
       if (updateUserProfile.fulfilled.match(resultAction)) {
-        console.log("✅ Profile updated successfully:", resultAction.payload);
-        // Update avatar after success
-        if (resultAction.payload.avatar) {
-          setPreviewAvatar(
-            `http://localhost:5000${resultAction.payload.avatar}`
-          );
+        // Success case - check if payload and user exist
+        if (resultAction.payload && resultAction.payload.user) {
+          if (resultAction.payload.user.avatar) {
+            setPreviewAvatar(`${STATIC_URL}${resultAction.payload.user.avatar}`);
+          }
+          onClose();
         }
-
-        onClose(); // Close the modal after successful update
-
-
-      } else {
-        console.error("❌ Error updating profile:", resultAction.payload);
+      } else if (updateUserProfile.rejected.match(resultAction)) {
+        // Error case - show error message
+        const errorMessage = resultAction.payload?.message || "Failed to update profile";
+        console.error("❌ Error updating profile:", errorMessage);
       }
     } catch (error) {
       console.error("❌ Error while updating profile:", error);
@@ -149,12 +156,11 @@ const Profile = ({ isOpen, onClose }) => {
             />
           </div>
 
-          <button type="submit" disabled={isLoading}    >
+          <button type="submit" disabled={isLoading}>
             {isLoading ? "Updating..." : "Update Profile"}
           </button>
         </form>
 
-        {/* Delete Button */}
         {/* Delete Button */}
         <button
           className="delete-button"
@@ -162,6 +168,11 @@ const Profile = ({ isOpen, onClose }) => {
           title="Delete Account">
           <FontAwesomeIcon icon={faHeartBroken} />
         </button>
+
+        {/* Error Message */}
+        {isError && message && (
+          <div className="error">{message}</div>
+        )}
       </div>
     </div>
   );

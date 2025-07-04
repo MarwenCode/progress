@@ -7,12 +7,15 @@ import { faHouseChimney } from "@fortawesome/free-solid-svg-icons";
 import Profile from "../profile/Profile";
 import "./navbar.scss";
 
+const API_URL = `${import.meta.env.VITE_API_URL}`;
+const STATIC_URL = import.meta.env.VITE_API_URL.replace(/\/api$/, '');
+
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth?.user);
+  const user = useSelector((state) => state.user?.user);
   const isAuthenticated = !!user;
-  const [userAvatar, setUserAvatar] = useState("assets/default-avatar.png");
+  const [userAvatar, setUserAvatar] = useState("/assets/default-avatar.png");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [authDropdownOpen, setAuthDropdownOpen] = useState(false);
 
@@ -21,10 +24,10 @@ const Navbar = () => {
       if (user.avatar.startsWith("http")) {
         setUserAvatar(user.avatar);
       } else {
-        setUserAvatar(`http://localhost:5000${user.avatar}?t=${Date.now()}`);
+        setUserAvatar(`${STATIC_URL}${user.avatar}?t=${Date.now()}`);
       }
     } else {
-      setUserAvatar("assets/default-avatar.png");
+      setUserAvatar("/assets/default-avatar.png");
     }
   }, [user]);
 

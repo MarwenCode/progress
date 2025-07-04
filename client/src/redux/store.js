@@ -6,6 +6,7 @@ import weeklyReducer from './weeklySlice/weeklySlice';
 import monthlyReducer from "./monthlySlice/monthlySlice";
 import floatingNoteReducer from "./floatingNoteSlice/floatingNoteSlice";
 import authReducer from "./authSlice/authSlice";
+import userReducer from "./userSlice/userSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     monthly: monthlyReducer,
     floatingNotes: floatingNoteReducer,
     auth: authReducer,
+    user: userReducer,
   },
 });
 

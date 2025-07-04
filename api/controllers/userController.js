@@ -181,13 +181,19 @@ export const updateUserProfile = async (req, res) => {
     console.log("Fichier reçu:", req.file);
     console.log("Données reçues:", req.body);
 
+    if (!req.user || !req.user._id) {
+      console.error("No authenticated user found in request.");
+      return res.status(401).json({ message: "User not authenticated.", user: null });
+    }
+
     const userId = req.user._id;
     const { username, email, password } = req.body;
     const avatar = req.file ? `/uploads/${req.file.filename}` : undefined;
 
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found." });
+      console.error("User not found in database.");
+      return res.status(404).json({ message: "User not found.", user: null });
     }
 
     if (username) user.username = username;
@@ -201,8 +207,9 @@ export const updateUserProfile = async (req, res) => {
     await user.save();
     res.status(200).json({ message: "Profile updated successfully.", user });
   } catch (error) {
-    console.error("Erreur serveur:", error);
-    res.status(500).json({ message: "Server error." });
+    console.error("Erreur serveur dans updateUserProfile:", error);
+    // Never leak internal error details to the client
+    res.status(500).json({ message: "Server error in updateUserProfile.", user: null });
   }
 };
 

@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = `${import.meta.env.VITE_API_URL}/auth`;
+const USER_API_URL = `${import.meta.env.VITE_API_URL}/user`;
 
 // Get user from localStorage
 const user = JSON.parse(localStorage.getItem('user'));
@@ -109,7 +110,7 @@ export const updateUserProfile = createAsyncThunk(
         }
       };
 
-      const response = await axios.put(`${API_URL}/user/update`, userData, config);
+      const response = await axios.put(`${USER_API_URL}/update`, userData, config);
       return response.data;
     } catch (error) {
       const message = error.response?.data?.message || error.message;
@@ -134,7 +135,7 @@ export const deleteUserProfile = createAsyncThunk(
         }
       };
 
-      await axios.delete(`${API_URL}/user/delete`, config);
+      await axios.delete(`${USER_API_URL}/delete`, config);
       localStorage.removeItem('user');
     } catch (error) {
       const message = error.response?.data?.message || error.message;
