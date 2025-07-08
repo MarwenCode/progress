@@ -15,6 +15,14 @@ const initialState = {
   message: ""
 };
 
+// Rehydrate user from localStorage on app start
+export const rehydrateUser = () => (dispatch) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    dispatch(login(user));
+  }
+};
+
 // Register user
 export const registerUser = createAsyncThunk(
   "user/register",
@@ -23,6 +31,7 @@ export const registerUser = createAsyncThunk(
       const response = await axios.post(`${API_URL}/user/register`, userData);
       if (response.data) {
         localStorage.setItem("user", JSON.stringify(response.data));
+        thunkAPI.dispatch(login(response.data));
       }
       return response.data;
     } catch (error) {
@@ -40,6 +49,7 @@ export const loginUser = createAsyncThunk(
       const response = await axios.post(`${API_URL}/user/login`, userData);
       if (response.data) {
         localStorage.setItem("user", JSON.stringify(response.data));
+        thunkAPI.dispatch(login(response.data));
       }
       return response.data;
     } catch (error) {
@@ -142,8 +152,9 @@ export const deleteUserProfile = createAsyncThunk(
 );
 
 // Logout user
-export const logoutUser = createAsyncThunk("user/logout", async () => {
+export const logoutUser = createAsyncThunk("user/logout", async (_, thunkAPI) => {
   localStorage.removeItem("user");
+  thunkAPI.dispatch(login(null));
 });
 
 export const userSlice = createSlice({

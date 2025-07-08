@@ -38,12 +38,13 @@ const Profile = ({ isOpen, onClose }) => {
     if (user) {
       setUsername(user.username);
       setEmail(user.email);
-      setPreviewAvatar(
-        user.avatar
-          ? `${STATIC_URL}${user.avatar}`
-          : "/assets/default-avatar.png"
-      );
       setPassword(""); // Do not prefill password
+      console.log("DEBUG AVATAR VALUE:", user.avatar);
+      if (!user.avatar || user.avatar === "/assets/default-avatar.png" || user.avatar === "assets/default-avatar.png") {
+        setPreviewAvatar("/assets/default-avatar.png");
+      } else {
+        setPreviewAvatar(`${STATIC_URL}${user.avatar}`);
+      }
     }
   }, [user]);
 
@@ -104,7 +105,28 @@ const Profile = ({ isOpen, onClose }) => {
 
         {/* Avatar Section */}
         <div className="avatar-section">
-          <img src={previewAvatar} alt="Avatar" className="avatar" />
+          {(!user.avatar || user.avatar === "/assets/default-avatar.png" || user.avatar === "assets/default-avatar.png") ? (
+            <div
+              className="letter-avatar"
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                background: "#e05682",
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 28,
+                fontWeight: "bold",
+                margin: "0 auto"
+              }}
+            >
+              {user.username ? user.username.charAt(0).toUpperCase() : "?"}
+            </div>
+          ) : (
+            <img src={previewAvatar} alt="Avatar" className="avatar" />
+          )}
           <label htmlFor="avatar-upload" className="avatar-upload-label">
             <FontAwesomeIcon icon={faCamera} className="camera-icon" />
           </label>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../../redux/authSlice/authSlice";
+import { logoutUser } from "../../redux/userSlice/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseChimney } from "@fortawesome/free-solid-svg-icons";
 import Profile from "../profile/Profile";
@@ -32,8 +32,7 @@ const Navbar = () => {
   }, [user]);
 
   const handleSignOut = () => {
-    localStorage.removeItem("user");
-    dispatch(logout());
+    dispatch(logoutUser());
     navigate("/login");
   };
 
@@ -50,7 +49,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="logo" onClick={() => navigate("/")}>
-        <img src="assets/steps.png" alt="Steps Logo" className="logo-image" />
+        <img src="/assets/steps.png" alt="Steps Logo" className="logo-image" />
       </div>
 
       <div className="nav-pages">
