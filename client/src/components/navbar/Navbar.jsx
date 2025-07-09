@@ -60,13 +60,13 @@ const Navbar = () => {
 
       {isAuthenticated && (
         <div className="icons-cards">
-          <div className="card daily" onClick={() => navigate("/daily")}>
+          <div className="card daily" style={{cursor: 'pointer'}} onClick={() => navigate("/daily")}> 
             <p>D</p>
           </div>
-          <div className="card weekly" onClick={() => navigate("/weekly")}>
+          <div className="card weekly" style={{cursor: 'pointer'}} onClick={() => navigate("/weekly")}> 
             <p>W</p>
           </div>
-          <div className="card monthly" onClick={() => navigate("/monthly")}>
+          <div className="card monthly" style={{cursor: 'pointer'}} onClick={() => navigate("/monthly")}> 
             <p>M</p>
           </div>
         </div>

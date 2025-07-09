@@ -8,9 +8,10 @@ import {
   deleteMonthlyGoal,
 } from "../../redux/monthlySlice/monthlySlice";
 import { RiDeleteBinLine } from "react-icons/ri";
+import DeleteModal from "./DeleteModal";
 import "./monthly.scss";
 
-const Monthly = () => {
+const Monthly = ({}) => {
   const dispatch = useDispatch();
   const { goals, status, error } = useSelector((state) => state.monthly);
 
@@ -19,6 +20,7 @@ const Monthly = () => {
   const [month, setMonth] = useState("");
   const [goalName, setGoalName] = useState("");
   const [goalDetails, setGoalDetails] = useState("");
+  const [modalGoalId, setModalGoalId] = useState(null);
 
   // State for the inline task input fields
   const [taskInputs, setTaskInputs] = useState({});
@@ -69,12 +71,6 @@ const Monthly = () => {
     dispatch(updateTaskCompletion({ goalId, taskId, completed: !completed }));
   };
 
-  const handleDeleteGoal = (goalId) => {
-    if (window.confirm("Are you sure you want to delete this goal?")) {
-      dispatch(deleteMonthlyGoal(goalId));
-    }
-  };
-
   const calculateProgress = (tasks = []) => {
     if (tasks.length === 0) return 0;
     const completedTasks = tasks.filter((task) => task.completed).length;
@@ -121,15 +117,43 @@ const Monthly = () => {
                 />
               </div>
               <div className="form-group">
-                <select value={month} onChange={(e) => setMonth(e.target.value)} required>
-                  <option value="" disabled>Select a month</option>
-                  {[ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
-                  .map((m) => (<option key={m} value={m}>{m}</option>))}
+                <select
+                  value={month}
+                  onChange={(e) => setMonth(e.target.value)}
+                  required>
+                  <option value="" disabled>
+                    Select a month
+                  </option>
+                  {[
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                  ].map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="button-group">
-                <button type="submit" className="save-btn">Save Goal</button>
-                <button type="button" className="cancel-btn" onClick={handleCloseModal}>Cancel</button>
+                <button type="submit" className="save-btn">
+                  Save Goal
+                </button>
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={handleCloseModal}>
+                  Cancel
+                </button>
               </div>
             </form>
           </div>
@@ -141,7 +165,7 @@ const Monthly = () => {
           {goals.map((goal) => {
             // --- DEBUG LOG ---
             console.log("[Render] Processing goal object:", goal);
-            
+
             return (
               <div key={goal.id} className="goal-card">
                 <div className="goal-header">
@@ -151,35 +175,59 @@ const Monthly = () => {
 
                 <div className="goal-footer">
                   <h4>{goal.month}</h4>
-                  <div className="deleteButton" onClick={() => handleDeleteGoal(goal.id)}>
+                  <div
+                    className="deleteButton"
+                    onClick={() => setModalGoalId(goal.id)}>
                     <RiDeleteBinLine />
                   </div>
                 </div>
+                <DeleteModal
+  isOpen={modalGoalId === goal.id}
+  onClose={() => setModalGoalId(null)}
+  onDelete={() => {
+    dispatch(deleteMonthlyGoal(goal.id));
+    setModalGoalId(null);
+  }}
+/>
 
                 <div className="progress-bar">
-                  <div className="progress" style={{ width: `${calculateProgress(goal.tasks)}%` }}></div>
+                  <div
+                    className="progress"
+                    style={{
+                      width: `${calculateProgress(goal.tasks)}%`,
+                    }}></div>
                 </div>
-                <p className="progress-text">{calculateProgress(goal.tasks)}% completed</p>
+                <p className="progress-text">
+                  {calculateProgress(goal.tasks)}% completed
+                </p>
 
                 <div className="task-form">
                   <input
                     type="text"
                     placeholder="Add a sub-task"
                     value={taskInputs[goal.id] || ""}
-                    onChange={(e) => handleTaskInputChange(goal.id, e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleAddTask(goal.id)}
+                    onChange={(e) =>
+                      handleTaskInputChange(goal.id, e.target.value)
+                    }
+                    onKeyPress={(e) =>
+                      e.key === "Enter" && handleAddTask(goal.id)
+                    }
                   />
                   <button onClick={() => handleAddTask(goal.id)}>Add</button>
                 </div>
 
                 <ul className="task-list">
                   {(goal.tasks || []).map((task) => (
-                    <li key={task._id} className={task.completed ? "completed" : ""}>
+                    <li
+                      key={task._id}
+                      className={task.completed ? "completed" : ""}>
                       <input
                         type="checkbox"
                         id={`task-${task._id}`}
                         checked={task.completed}
-                        onChange={() => handleToggleTask(goal.id, task._id, task.completed)}
+                        onChange={() =>
+                          handleToggleTask(goal.id, task._id, task.completed)
+                        }
                       />
                       <label htmlFor={`task-${task._id}`}>
                         <span>{task.text}</span>
