@@ -86,7 +86,7 @@ const monthlySchema = new Schema(
 );
 
 // Index pour améliorer les performances des requêtes
-monthlySchema.index({ user: 1, month: 1 });
+monthlySchema.index({ user: 1, month: 1 }, { unique: true }); // Prevent duplicate months per user
 monthlySchema.index({ user: 1, completed: 1 });
 
 // Méthode virtuelle pour calculer le pourcentage de complétion

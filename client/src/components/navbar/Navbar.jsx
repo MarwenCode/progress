@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/userSlice/userSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouseChimney } from "@fortawesome/free-solid-svg-icons";
 import Profile from "../profile/Profile";
 import "./navbar.scss";
 
@@ -74,9 +72,6 @@ const Navbar = () => {
 
       {isAuthenticated && (
         <div className="nav-icons">
-          <div className="nav-item" onClick={() => navigate("/")}>
-            <FontAwesomeIcon icon={faHouseChimney} />
-          </div>
           <div className="nav-item" onClick={() => setIsProfileOpen(true)}>
             <img src={userAvatar} alt="User Avatar" className="user-avatar" />
             <span className="user-name">{user?.username}</span>

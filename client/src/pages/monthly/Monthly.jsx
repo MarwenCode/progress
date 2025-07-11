@@ -160,28 +160,50 @@ const Monthly = ({}) => {
         </div>
       )}
 
+      {/* Sort goals by month order before rendering */}
       {goals.length > 0 ? (
         <div className="goals-list">
-          {goals.map((goal) => {
-            // --- DEBUG LOG ---
-            console.log("[Render] Processing goal object:", goal);
+          {goals
+            .slice()
+            .sort((a, b) => {
+              const monthOrder = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December",
+              ];
+              return (
+                monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month)
+              );
+            })
+            .map((goal) => {
+              // --- DEBUG LOG ---
+              console.log("[Render] Processing goal object:", goal);
 
-            return (
-              <div key={goal.id} className="goal-card">
-                <div className="goal-header">
-                  <h3>{goal.goalName}</h3>
-                  <p>{goal.goalDetails}</p>
-                </div>
-
-                <div className="goal-footer">
-                  <h4>{goal.month}</h4>
-                  <div
-                    className="deleteButton"
-                    onClick={() => setModalGoalId(goal.id)}>
-                    <RiDeleteBinLine />
+              return (
+                <div key={goal.id} className="goal-card">
+                  <div className="goal-header">
+                    <h3>{goal.goalName}</h3>
+                    <p>{goal.goalDetails}</p>
                   </div>
-                </div>
-                <DeleteModal
+
+                  <div className="goal-footer">
+                    <h4>{goal.month}</h4>
+                    <div
+                      className="deleteButton"
+                      onClick={() => setModalGoalId(goal.id)}>
+                      <RiDeleteBinLine />
+                    </div>
+                  </div>
+                  <DeleteModal
   isOpen={modalGoalId === goal.id}
   onClose={() => setModalGoalId(null)}
   onDelete={() => {
@@ -190,54 +212,54 @@ const Monthly = ({}) => {
   }}
 />
 
-                <div className="progress-bar">
-                  <div
-                    className="progress"
-                    style={{
-                      width: `${calculateProgress(goal.tasks)}%`,
-                    }}></div>
-                </div>
-                <p className="progress-text">
-                  {calculateProgress(goal.tasks)}% completed
-                </p>
+                  <div className="progress-bar">
+                    <div
+                      className="progress"
+                      style={{
+                        width: `${calculateProgress(goal.tasks)}%`,
+                      }}></div>
+                  </div>
+                  <p className="progress-text">
+                    {calculateProgress(goal.tasks)}% completed
+                  </p>
 
-                <div className="task-form">
-                  <input
-                    type="text"
-                    placeholder="Add a sub-task"
-                    value={taskInputs[goal.id] || ""}
-                    onChange={(e) =>
-                      handleTaskInputChange(goal.id, e.target.value)
-                    }
-                    onKeyPress={(e) =>
-                      e.key === "Enter" && handleAddTask(goal.id)
-                    }
-                  />
-                  <button onClick={() => handleAddTask(goal.id)}>Add</button>
-                </div>
+                  <div className="task-form">
+                    <input
+                      type="text"
+                      placeholder="Add a sub-task"
+                      value={taskInputs[goal.id] || ""}
+                      onChange={(e) =>
+                        handleTaskInputChange(goal.id, e.target.value)
+                      }
+                      onKeyPress={(e) =>
+                        e.key === "Enter" && handleAddTask(goal.id)
+                      }
+                    />
+                    <button onClick={() => handleAddTask(goal.id)}>Add</button>
+                  </div>
 
-                <ul className="task-list">
-                  {(goal.tasks || []).map((task) => (
-                    <li
-                      key={task._id}
-                      className={task.completed ? "completed" : ""}>
-                      <input
-                        type="checkbox"
-                        id={`task-${task._id}`}
-                        checked={task.completed}
-                        onChange={() =>
-                          handleToggleTask(goal.id, task._id, task.completed)
-                        }
-                      />
-                      <label htmlFor={`task-${task._id}`}>
-                        <span>{task.text}</span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
+                  <ul className="task-list">
+                    {(goal.tasks || []).map((task) => (
+                      <li
+                        key={task._id}
+                        className={task.completed ? "completed" : ""}>
+                        <input
+                          type="checkbox"
+                          id={`task-${task._id}`}
+                          checked={task.completed}
+                          onChange={() =>
+                            handleToggleTask(goal.id, task._id, task.completed)
+                          }
+                        />
+                        <label htmlFor={`task-${task._id}`}>
+                          <span>{task.text}</span>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
         </div>
       ) : (
         <div className="no-goals-container">

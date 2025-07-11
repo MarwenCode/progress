@@ -3,14 +3,17 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTasks, updateTask, deleteTask, createTask } from '../../redux/taskSlice/taskSlice'
 import TaskItems from '../../components/taskItems/TaskItems';
-import './daily.scss'
-import { RiDeleteBinLine } from 'react-icons/ri';
+import './daily.scss';
+
 
 const Daily = () => {
   const dispatch = useDispatch();
   const { tasks, loading, error } = useSelector((state) => state.tasks);
   const [newTask, setNewTask] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [iconSearch, setIconSearch] = useState("");
+  const [selectedIcon, setSelectedIcon] = useState("faRegCircle");
 
   useEffect(() => {
     dispatch(getTasks());
