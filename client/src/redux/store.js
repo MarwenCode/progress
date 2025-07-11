@@ -1,12 +1,12 @@
 // src/redux/store.js
 
 import { configureStore } from '@reduxjs/toolkit';
-import taskReducer from './taskSlice/taskSlice';
-import weeklyReducer from './weeklySlice/weeklySlice';
-import monthlyReducer from "./monthlySlice/monthlySlice";
-import floatingNoteReducer from "./floatingNoteSlice/floatingNoteSlice";
-import authReducer from "./authSlice/authSlice";
-import userReducer from "./userSlice/userSlice";
+import taskReducer from './taskSlice/taskSlice.js';
+import weeklyReducer from './weeklySlice/weeklySlice.js';
+import monthlyReducer from "./monthlySlice/monthlySlice.js";
+import floatingNoteReducer from "./floatingNoteSlice/floatingNoteSlice.js";
+import authReducer from "./authSlice/authSlice.js";
+import userReducer from "./userSlice/userSlice.js";
 
 const store = configureStore({
   reducer: {
