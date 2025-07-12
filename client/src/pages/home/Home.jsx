@@ -36,7 +36,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+{/* 
       <section className="video-section">
         <h2>See STEPS in Action</h2>
         <div className="video-wrapper">
@@ -50,7 +50,7 @@ const Home = () => {
             allowFullScreen
           ></iframe>
         </div>
-      </section>
+      </section> */}
 
       <section className="app-showcase-section">
         <h2>Experience STEPS</h2>

@@ -64,6 +64,10 @@ const initialState = {
 const floatingNoteSlice = createSlice({
   name: 'floatingNotes',
   initialState,
+  resetFloatingNotes: (state) => {
+    state.notes = []
+    state.error = null
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder
