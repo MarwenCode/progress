@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutUser } from "../../redux/userSlice/userSlice";
+import { logout } from "../../redux/authSlice/authSlice";
 import Profile from "../profile/Profile";
 import "./navbar.scss";
 
@@ -11,7 +11,7 @@ const STATIC_URL = import.meta.env.VITE_API_URL.replace(/\/api$/, '');
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user?.user);
+  const user = useSelector((state) => state.auth?.user);
   const isAuthenticated = !!user;
   const [userAvatar, setUserAvatar] = useState("/assets/default-avatar.png");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -30,7 +30,7 @@ const Navbar = () => {
   }, [user]);
 
   const handleSignOut = () => {
-    dispatch(logoutUser());
+    dispatch(logout());
     navigate("/login");
   };
 
