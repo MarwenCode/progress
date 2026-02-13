@@ -28,6 +28,11 @@ export const createMonthlyGoal = async (req, res) => {
       return res.status(400).json({ message: "Month and Goal Name are required" });
     }
 
+    const existingGoal = await MonthlyGoal.findOne({ user: userId, month });
+    if (existingGoal) {
+      return res.status(409).json({ message: "A monthly goal already exists for this month" });
+    }
+
     const newGoal = new MonthlyGoal({ 
       month, 
       goalName, 
@@ -41,6 +46,16 @@ export const createMonthlyGoal = async (req, res) => {
     res.status(201).json(newGoal);
   } catch (error) {
     console.error("Error creating monthly goal:", error);
+
+    if (error?.code === 11000) {
+      return res.status(409).json({ message: "A monthly goal already exists for this month" });
+    }
+
+    if (error?.name === "ValidationError") {
+      const details = Object.values(error.errors || {}).map((entry) => entry.message);
+      return res.status(400).json({ message: "Invalid monthly goal data", details });
+    }
+
     res.status(500).json({ message: "Error creating monthly goal", error: error.message });
   }
 };

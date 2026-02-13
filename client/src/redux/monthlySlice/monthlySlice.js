@@ -4,6 +4,14 @@ import { createWeeklyGoal } from "../weeklySlice/weeklySlice";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/tasks/monthly`;
 
+const extractErrorMessage = (error, fallbackMessage) => {
+  const data = error?.response?.data;
+  if (typeof data === "string") return data;
+  if (data?.message) return data.message;
+  if (Array.isArray(data?.details) && data.details.length > 0) return data.details.join(", ");
+  return fallbackMessage;
+};
+
 // Helper function to get auth config
 const getAuthConfig = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -24,7 +32,7 @@ export const fetchMonthlyGoals = createAsyncThunk(
       console.log("Fetched Goals:", response.data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to fetch goals");
+      return rejectWithValue(extractErrorMessage(error, "Failed to fetch goals"));
     }
   }
 );
@@ -43,7 +51,7 @@ export const addMonthlyGoal = createAsyncThunk(
       }, config);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to add goal");
+      return rejectWithValue(extractErrorMessage(error, "Failed to add goal"));
     }
   }
 );
@@ -132,6 +140,9 @@ const monthlySlice = createSlice({
       // Add Goal
       .addCase(addMonthlyGoal.fulfilled, (state, action) => {
         state.goals.push(action.payload);
+      })
+      .addCase(addMonthlyGoal.rejected, (state, action) => {
+        state.error = action.payload || "Failed to add goal";
       })
 
       // delete goal

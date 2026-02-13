@@ -117,11 +117,10 @@ monthlySchema.methods.toggleTask = function(taskId) {
 };
 
 // Middleware pre-save pour mettre à jour le statut completed
-monthlySchema.pre('save', function(next) {
+monthlySchema.pre('save', function() {
   if (this.tasks.length > 0) {
     this.completed = this.tasks.every(task => task.completed);
   }
-  next();
 });
 
 // Export du modèle

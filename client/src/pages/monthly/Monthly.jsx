@@ -38,15 +38,19 @@ const Monthly = ({}) => {
     setGoalDetails("");
   };
 
-  const handleAddGoal = (e) => {
+  const handleAddGoal = async (e) => {
     e.preventDefault(); // Prevent form submission
     if (!month || !goalName) {
       alert("Please fill in the month and goal name.");
       return;
     }
 
-    dispatch(addMonthlyGoal({ month, goalName, goalDetails }));
-    handleCloseModal(); // Close modal and reset fields after dispatch
+    try {
+      await dispatch(addMonthlyGoal({ month, goalName, goalDetails })).unwrap();
+      handleCloseModal(); // Close modal and reset fields after dispatch
+    } catch (err) {
+      alert(typeof err === "string" ? err : "Failed to add monthly goal");
+    }
   };
 
   const handleTaskInputChange = (goalId, value) => {

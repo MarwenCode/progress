@@ -4,6 +4,7 @@ const connectDB = async () => {
   try {
     const conn = await connect(process.env.MONGODB_URI, {
       // Add connection options for better stability
+      family: 4,
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
