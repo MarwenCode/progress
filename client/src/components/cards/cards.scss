@@ -121,3 +121,28 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .cards-container .cards {
+    flex-wrap: wrap;
+    gap: 12px;
+
+    .card {
+      width: 130px;
+      height: 86px;
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .cards-container .cards .card {
+    width: calc(50% - 8px);
+    min-width: 120px;
+  }
+
+  .modal-overlay .modal {
+    width: 92%;
+    padding: 1rem;
+  }
+}

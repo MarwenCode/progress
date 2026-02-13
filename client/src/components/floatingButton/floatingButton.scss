@@ -19,3 +19,11 @@
     transform: scale(0.95);
   }
 }
+
+@media (max-width: 640px) {
+  .floating-button {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+}

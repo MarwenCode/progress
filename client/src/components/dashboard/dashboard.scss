@@ -94,3 +94,34 @@
     background-color: #e14e1a;
   }
 }
+
+@media (max-width: 900px) {
+  .dashboard-container {
+    height: auto;
+    min-height: 100vh;
+
+    .dashboard-header h1 {
+      font-size: 2.2rem;
+    }
+  }
+
+  .goals {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-container {
+    padding: 12px;
+
+    .dashboard-header h1 {
+      font-size: 1.7rem;
+    }
+  }
+
+  .add-goal-button {
+    width: 100%;
+    font-size: 1rem;
+  }
+}

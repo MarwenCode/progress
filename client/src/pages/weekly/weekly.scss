@@ -337,3 +337,72 @@
   white-space: pre-line;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
+
+@media (max-width: 992px) {
+  .weekly-container {
+    padding: 1.25rem;
+
+    .box {
+      padding: 22px;
+
+      h2 {
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .weekly-container {
+    padding: 0.7rem;
+
+    .box {
+      padding: 14px;
+      border-radius: 14px;
+
+      h2 {
+        font-size: 1.55rem;
+        margin-bottom: 1.2rem;
+      }
+
+      .current-goal-info {
+        padding: 1rem;
+        border-radius: 14px;
+
+        .goal-header {
+          align-items: flex-start;
+          gap: 8px;
+        }
+      }
+
+      .day-selector-container .day-selector {
+        gap: 8px;
+      }
+
+      .add-goal-btn {
+        width: 100%;
+        padding: 0.85rem 1rem;
+      }
+
+      .modal .modal-content {
+        width: 95%;
+        padding: 1rem;
+
+        .button-group {
+          gap: 10px;
+          flex-direction: column;
+
+          .save-btn,
+          .cancel-btn {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .goal-details-box {
+    font-size: 0.95rem;
+    padding: 0.8rem;
+  }
+}

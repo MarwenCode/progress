@@ -62,3 +62,20 @@
   background: #ccc;
 }
 
+@media (max-width: 640px) {
+  .delete-modal-content {
+    min-width: 0;
+    width: 92vw;
+    padding: 1.2rem 1rem;
+  }
+
+  .delete-modal-content h2 {
+    font-size: 1.2rem;
+  }
+
+  .delete-modal-content button {
+    width: 100%;
+    margin: 0.4rem 0;
+  }
+}
+

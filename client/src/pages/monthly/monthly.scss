@@ -27,6 +27,15 @@
     margin-bottom: 20px;
   }
 
+  .header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
   .add-goal-btn {
     padding: 12px 20px;
     background-color: #ff6f61;
@@ -286,6 +295,77 @@
             color: #aaa;
           }
         }
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .monthly-container {
+    padding: 20px;
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .monthly-container {
+    margin-top: 12px;
+    margin-bottom: 1.5rem;
+    padding: 12px;
+    border-radius: 14px;
+
+    .header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    h2 {
+      font-size: 1.55rem;
+      text-align: center;
+    }
+
+    .add-goal-btn {
+      width: 100%;
+      margin-bottom: 14px;
+    }
+
+    .modal .modal-content {
+      width: 95%;
+      padding: 1rem;
+
+      .button-group {
+        flex-direction: column;
+        gap: 10px;
+
+        .save-btn,
+        .cancel-btn {
+          width: 100%;
+        }
+      }
+    }
+
+    .goals-list .goal-card {
+      padding: 14px;
+
+      .goal-footer {
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .task-form {
+        flex-direction: column;
+
+        button {
+          width: 100%;
+        }
+      }
+
+      ul li label span {
+        word-break: break-word;
       }
     }
   }

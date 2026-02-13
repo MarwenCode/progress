@@ -351,3 +351,86 @@
  
   
 }
+
+@media (max-width: 992px) {
+  .daily-container {
+    padding: 16px;
+
+    .box {
+      padding: 22px;
+
+      .header {
+        h1 {
+          font-size: 2rem;
+          margin-bottom: 10px;
+        }
+
+        .icon {
+          font-size: 90px;
+        }
+
+        .percent {
+          font-size: 32px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .daily-container {
+    padding: 10px;
+
+    .box {
+      padding: 14px;
+      border-radius: 14px;
+
+      .header {
+        justify-content: center;
+        gap: 8px;
+
+        h1 {
+          font-size: 1.55rem;
+        }
+
+        .icon {
+          font-size: 64px;
+          margin: 0;
+        }
+
+        .percent {
+          font-size: 26px;
+        }
+      }
+
+      .goal-section,
+      .tasks-section {
+        padding: 14px;
+        margin: 16px 0;
+
+        h3 {
+          font-size: 1.45rem;
+        }
+      }
+
+      .tasks-section ul li {
+        gap: 8px;
+      }
+
+      .modal .modal-content {
+        padding: 18px;
+
+        .icons {
+          font-size: 44px;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
+        button {
+          width: 100%;
+          margin: 10px 0 0 0;
+        }
+      }
+    }
+  }
+}

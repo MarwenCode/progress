@@ -57,3 +57,20 @@
     }
   }
 }
+
+@media (max-width: 640px) {
+  .task-item {
+    padding: 8px;
+    align-items: flex-start;
+
+    .task-title {
+      font-size: 0.95rem;
+      margin-left: 6px;
+      word-break: break-word;
+    }
+
+    .deleteButton .delete-btn {
+      font-size: 1.3rem;
+    }
+  }
+}

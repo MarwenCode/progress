@@ -42,3 +42,27 @@
     }
   }
   
+
+@media (max-width: 640px) {
+  .features {
+    padding: 2.5rem 1rem;
+
+    h2 {
+      font-size: 1.85rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+
+      .feature-card {
+        padding: 1rem;
+
+        h3 {
+          font-size: 1.2rem;
+        }
+      }
+    }
+  }
+}

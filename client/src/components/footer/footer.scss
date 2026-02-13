@@ -39,5 +39,14 @@
       }
     }
   }
+
+@media (max-width: 360px) {
+  .footer {
+    p,
+    .links a {
+      font-size: 0.8rem;
+    }
+  }
+}
   
   

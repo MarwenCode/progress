@@ -187,3 +187,20 @@ form {
     opacity: 1;
   }
 }
+
+@media (max-width: 640px) {
+  .modal-content {
+    width: min(92vw, 350px);
+    padding: 1.2rem;
+  }
+
+  .avatar-section .avatar {
+    width: 68px;
+    height: 68px;
+  }
+
+  .delete-button {
+    margin-top: 1.2rem;
+    font-size: 1.5rem;
+  }
+}
