@@ -12,7 +12,10 @@ import "./profile.scss";
 
 const Profile = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
+  const authUser = useSelector((state) => state.auth?.user);
+  const userStateUser = useSelector((state) => state.user?.user);
+  const persistedUser = JSON.parse(localStorage.getItem("user") || "null");
+  const user = authUser || userStateUser || persistedUser;
   const isLoading = useSelector((state) => state.user.isLoading);
   const isError = useSelector((state) => state.user.isError);
   const message = useSelector((state) => state.user.message);

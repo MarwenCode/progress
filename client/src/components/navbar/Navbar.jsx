@@ -11,7 +11,9 @@ const STATIC_URL = import.meta.env.VITE_API_URL.replace(/\/api$/, '');
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth?.user);
+  const authUser = useSelector((state) => state.auth?.user);
+  const persistedUser = JSON.parse(localStorage.getItem("user") || "null");
+  const user = authUser || persistedUser;
   const isAuthenticated = !!user;
   const [userAvatar, setUserAvatar] = useState("/assets/default-avatar.png");
   const [isProfileOpen, setIsProfileOpen] = useState(false);

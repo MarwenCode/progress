@@ -31,15 +31,17 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [buttonPosition, setButtonPosition] = useState({ x: 100, y: 100 });
 
-  const user = useSelector((state) => state.auth?.user);
-  const isAuthenticated = !!user;
+  const authUser = useSelector((state) => state.auth?.user);
+  const persistedUser = JSON.parse(localStorage.getItem("user") || "null");
+  const currentUser = authUser || persistedUser;
+  const isAuthenticated = !!currentUser;
   const isLoading = useSelector((state) => state.auth?.isLoading);
 
   useEffect(() => {
     // Only check current user on initial load if user exists in localStorage
     // but not in Redux state (i.e., page refresh)
     const userFromStorage = JSON.parse(localStorage.getItem('user'));
-    if (userFromStorage && !user) {
+    if (userFromStorage && !authUser) {
       dispatch(getCurrentUser());
     }
   }, []); // Empty dependency array - only run once on mount
@@ -92,5 +94,4 @@ function App() {
 }
 
 export default App;
-
 

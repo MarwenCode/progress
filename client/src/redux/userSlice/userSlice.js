@@ -63,9 +63,12 @@ export const rehydrateUser = () => (dispatch) => {
 export const updateUserProfile = createAsyncThunk(
   "user/updateProfile",
   async (userData, thunkAPI) => {
-    console.log('UPDATE PROFILE THUNK START');
     try {
-      const user = thunkAPI.getState().user.user;
+      const state = thunkAPI.getState();
+      const user =
+        state.user.user ||
+        state.auth?.user ||
+        JSON.parse(localStorage.getItem("user") || "null");
       if (!user || !user.token) {
         throw new Error("No user or token found");
       }
@@ -80,18 +83,14 @@ export const updateUserProfile = createAsyncThunk(
       let response;
       try {
         response = await axios.put(`${API_URL}/user/update`, userData, config);
-        console.log('UPDATE PROFILE RESPONSE:', response);
       } catch (error) {
-        console.error('UPDATE PROFILE THUNK ERROR:', error);
         let message = error.message || "Unknown error";
         return thunkAPI.rejectWithValue({ message });
       }
 
-      console.log('UPDATE PROFILE PRE-IF:', response);
       if (response && response.data && typeof response.data.user !== "undefined") {
         return response.data;
       } else {
-        console.log('UPDATE PROFILE BAD RESPONSE:', response);
         return thunkAPI.rejectWithValue({ message: response?.data?.message || "No user in response" });
       }
     } catch (error) {
@@ -131,7 +130,11 @@ export const deleteUserProfile = createAsyncThunk(
   "user/deleteProfile",
   async (_, thunkAPI) => {
     try {
-      const user = thunkAPI.getState().user.user;
+      const state = thunkAPI.getState();
+      const user =
+        state.user.user ||
+        state.auth?.user ||
+        JSON.parse(localStorage.getItem("user") || "null");
       if (!user || !user.token) {
         throw new Error("No user or token found");
       }
