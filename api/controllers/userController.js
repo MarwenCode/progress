@@ -77,7 +77,9 @@ export const authenticateUser = async (req, res, next) => {
 // Contrôleur pour l'inscription
 export const registerUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const username = req.body?.username?.trim();
+    const email = req.body?.email?.trim()?.toLowerCase();
+    const password = req.body?.password;
 
     // Vérification des champs requis
     if (!username || !email || !password) {
@@ -113,6 +115,16 @@ export const registerUser = async (req, res) => {
     });
   } catch (error) {
     console.error('Erreur dans registerUser:', error);
+    if (error?.code === 11000) {
+      const field = Object.keys(error.keyPattern || {})[0];
+      if (field === 'email') {
+        return res.status(400).json({ message: 'Email already in use.' });
+      }
+      if (field === 'username') {
+        return res.status(400).json({ message: 'Username already in use.' });
+      }
+      return res.status(400).json({ message: 'Duplicate value provided.' });
+    }
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
@@ -120,7 +132,8 @@ export const registerUser = async (req, res) => {
 // Contrôleur pour la connexion
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = req.body?.email?.trim()?.toLowerCase();
+    const password = req.body?.password;
 
     console.log("Email reçu:", email);
 

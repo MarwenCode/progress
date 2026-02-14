@@ -14,7 +14,13 @@ const generateToken = (user) => {
 // Register new user
 export const register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const username = req.body?.username?.trim();
+        const email = req.body?.email?.trim()?.toLowerCase();
+        const password = req.body?.password;
+
+        if (!username || !email || !password) {
+            return res.status(400).json({ message: 'Username, email, and password are required' });
+        }
 
         // Check if user already exists
         const userExists = await User.findOne({ email });
@@ -46,6 +52,16 @@ export const register = async (req, res) => {
         });
     } catch (error) {
         console.error('Register error:', error);
+        if (error?.code === 11000) {
+            const field = Object.keys(error.keyPattern || {})[0];
+            if (field === 'email') {
+                return res.status(400).json({ message: 'Email already in use' });
+            }
+            if (field === 'username') {
+                return res.status(400).json({ message: 'Username already in use' });
+            }
+            return res.status(400).json({ message: 'Duplicate value provided' });
+        }
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -53,7 +69,12 @@ export const register = async (req, res) => {
 // Login user
 export const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const email = req.body?.email?.trim()?.toLowerCase();
+        const password = req.body?.password;
+
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required' });
+        }
 
         // Find user
         const user = await User.findOne({ email });

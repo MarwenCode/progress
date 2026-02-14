@@ -17,7 +17,6 @@ const Profile = ({ isOpen, onClose }) => {
   const isError = useSelector((state) => state.user.isError);
   const message = useSelector((state) => state.user.message);
 
-  console.log("PROFILE COMPONENT STATE:", { user, isLoading, isError, message });
 
   // States for the form
   const [username, setUsername] = useState("");
@@ -39,7 +38,6 @@ const Profile = ({ isOpen, onClose }) => {
       setUsername(user.username);
       setEmail(user.email);
       setPassword(""); // Do not prefill password
-      console.log("DEBUG AVATAR VALUE:", user.avatar);
       if (!user.avatar || user.avatar === "/assets/default-avatar.png" || user.avatar === "assets/default-avatar.png") {
         setPreviewAvatar("/assets/default-avatar.png");
       } else {
@@ -94,6 +92,9 @@ const Profile = ({ isOpen, onClose }) => {
   };
 
   if (!isOpen) return null;
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
